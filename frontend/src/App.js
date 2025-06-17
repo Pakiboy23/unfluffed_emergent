@@ -554,12 +554,8 @@ const App = () => {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-neon-green">
-                  <img 
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
-                    alt="Scruff logo"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="scruff-logo">
+                  🦝
                 </div>
                 <span className="text-white font-bold text-xl">unfluffed</span>
               </div>
