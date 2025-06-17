@@ -222,28 +222,36 @@ async def get_product_details(asin: str, country: str = "US"):
         
         price_data = None
         availability = "Unknown"
-        if hasattr(item, 'offers') and item.offers and item.offers.listings:
+        if hasattr(item, 'offers') and item.offers and hasattr(item.offers, 'listings') and item.offers.listings:
             price_info = item.offers.listings[0].price
-            if price_info:
+            if price_info and hasattr(price_info, 'amount'):
                 price_data = {
-                    "amount": float(price_info.amount) if price_info.amount else None,
-                    "currency": price_info.currency if price_info.currency else None
+                    "amount": float(price_info.amount),
+                    "currency": price_info.currency if hasattr(price_info, 'currency') else 'USD'
                 }
-            if item.offers.listings[0].availability:
+            if hasattr(item.offers.listings[0], 'availability') and item.offers.listings[0].availability:
                 availability = item.offers.listings[0].availability.message
         
         rating = None
         review_count = None
         if hasattr(item, 'customer_reviews') and item.customer_reviews:
-            if item.customer_reviews.star_rating:
+            if hasattr(item.customer_reviews, 'star_rating') and item.customer_reviews.star_rating:
                 rating = float(item.customer_reviews.star_rating.value)
-            if item.customer_reviews.count:
+            if hasattr(item.customer_reviews, 'count'):
                 review_count = int(item.customer_reviews.count)
+        
+        title = "Unknown"
+        if hasattr(item, 'item_info') and item.item_info and hasattr(item.item_info, 'title') and item.item_info.title:
+            title = item.item_info.title.display_value
+        
+        image_url = None
+        if hasattr(item, 'images') and item.images and hasattr(item.images, 'primary') and item.images.primary and hasattr(item.images.primary, 'large'):
+            image_url = item.images.primary.large.url
         
         product_data = {
             "asin": item.asin,
-            "title": item.item_info.title.display_value if item.item_info and item.item_info.title else "Unknown",
-            "image_url": item.images.primary.large.url if item.images and item.images.primary else None,
+            "title": title,
+            "image_url": image_url,
             "price": price_data,
             "availability": availability,
             "rating": rating,
