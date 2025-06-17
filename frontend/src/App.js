@@ -38,6 +38,19 @@ const App = () => {
 
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
+  // Load categories on component mount
+  React.useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/categories`);
+        setCategories(response.data.categories || []);
+      } catch (error) {
+        console.error('Failed to load categories:', error);
+      }
+    };
+    loadCategories();
+  }, []);
+
   const handleEmailSubmit = (e) => {
     e.preventDefault();
     setIsSubscribed(true);
@@ -45,22 +58,98 @@ const App = () => {
     setTimeout(() => setIsSubscribed(false), 3000);
   };
 
-  const handleProductSearch = async () => {
+  const handleProductSearch = async (useAdvanced = false) => {
     if (!searchQuery.trim()) return;
     
     setIsSearching(true);
+    setIsUsingAdvancedSearch(useAdvanced);
+    
     try {
-      const response = await axios.post(`${BACKEND_URL}/api/products/search`, {
-        query: searchQuery,
-        country: searchCountry
-      });
-      setSearchResults(response.data.products || []);
+      let response;
+      if (useAdvanced) {
+        // Advanced search with filters
+        response = await axios.post(`${BACKEND_URL}/api/products/advanced-search`, {
+          query: searchQuery,
+          country: searchCountry,
+          min_price: searchFilters.minPrice ? parseFloat(searchFilters.minPrice) : null,
+          max_price: searchFilters.maxPrice ? parseFloat(searchFilters.maxPrice) : null,
+          min_rating: searchFilters.minRating ? parseFloat(searchFilters.minRating) : null,
+          category: searchFilters.category || null,
+          sort_by: searchFilters.sortBy,
+          include_suggestions: true
+        });
+        setSearchResults(response.data.products || []);
+        setTotalResults(response.data.total_count || 0);
+        setSearchSuggestions(response.data.suggestions || []);
+      } else {
+        // Basic search
+        response = await axios.post(`${BACKEND_URL}/api/products/search`, {
+          query: searchQuery,
+          country: searchCountry
+        });
+        setSearchResults(response.data.products || []);
+        setTotalResults(response.data.products?.length || 0);
+      }
     } catch (error) {
       console.error('Search failed:', error);
       setSearchResults([]);
+      setTotalResults(0);
     } finally {
       setIsSearching(false);
     }
+  };
+
+  const handleSearchInputChange = async (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    
+    // Get search suggestions
+    if (value.length >= 2) {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/search-suggestions?q=${encodeURIComponent(value)}`);
+        setSearchSuggestions(response.data.suggestions || []);
+        setShowSuggestions(true);
+      } catch (error) {
+        console.error('Failed to get suggestions:', error);
+      }
+    } else {
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setSearchQuery(suggestion);
+    setShowSuggestions(false);
+    // Auto-search when suggestion is clicked
+    setTimeout(() => {
+      if (isUsingAdvancedSearch) {
+        handleProductSearch(true);
+      } else {
+        handleProductSearch();
+      }
+    }, 100);
+  };
+
+  const handleFilterChange = (filterName, value) => {
+    setSearchFilters(prev => ({
+      ...prev,
+      [filterName]: value
+    }));
+  };
+
+  const clearFilters = () => {
+    setSearchFilters({
+      minPrice: '',
+      maxPrice: '',
+      minRating: '',
+      category: '',
+      sortBy: 'relevance'
+    });
+  };
+
+  const hasActiveFilters = () => {
+    return searchFilters.minPrice || searchFilters.maxPrice || searchFilters.minRating || 
+           searchFilters.category || searchFilters.sortBy !== 'relevance';
   };
 
   const toggleMobileMenu = () => {
