@@ -442,8 +442,232 @@
   outline: none;
 }
 
-/* Responsive - Better Breakpoints */
+/* Mobile Navigation */
+.mobile-nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  background: rgba(10, 10, 10, 0.98);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid #2a2a2a;
+  z-index: 40;
+  padding: 1.5rem;
+}
+
+.mobile-nav.active {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.mobile-nav-link {
+  color: #b3b3b3;
+  text-decoration: none;
+  font-size: 1.125rem;
+  font-weight: 500;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #2a2a2a;
+  transition: color 0.2s ease;
+}
+
+.mobile-nav-link:hover {
+  color: #39FF14;
+}
+
+.mobile-nav-link:last-child {
+  border-bottom: none;
+}
+
+/* Enhanced Mobile Responsive */
+@media (max-width: 1024px) {
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .search-form {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .search-select {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
 @media (max-width: 768px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+  
+  .section {
+    padding: 3.5rem 0;
+  }
+  
+  .section-sm {
+    padding: 2.5rem 0;
+  }
+  
+  /* Mobile Navigation */
+  .nav {
+    display: none;
+  }
+  
+  .mobile-nav-toggle {
+    display: block;
+  }
+  
+  /* Mobile Header */
+  .header {
+    height: 64px;
+  }
+  
+  .logo {
+    font-size: 1rem;
+  }
+  
+  .logo-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 0.75rem;
+  }
+  
+  /* Mobile Hero */
+  .hero {
+    padding: 6rem 0 4rem;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+  }
+  
+  .hero-badge {
+    margin-bottom: 2rem;
+    padding: 0.625rem 1rem;
+    font-size: 0.8125rem;
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+  
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 280px;
+    padding: 1rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+  
+  /* Mobile Grid */
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  /* Mobile Cards */
+  .kit-card-content {
+    padding: 1.5rem;
+  }
+  
+  .kit-card-image {
+    height: 200px;
+  }
+  
+  .card {
+    padding: 1.5rem;
+  }
+  
+  /* Mobile Typography */
+  .section-title {
+    font-size: 1.875rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1rem;
+  }
+  
+  .section-header {
+    margin-bottom: 3rem;
+  }
+  
+  /* Mobile Search */
+  .search-form {
+    flex-direction: column;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+  
+  .search-input {
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  .search-select {
+    padding: 0.75rem;
+    font-size: 1rem;
+    width: 100%;
+  }
+  
+  /* Mobile Forms */
+  .form-input {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  
+  /* Mobile Touch Targets */
+  .btn {
+    min-height: 48px;
+    padding: 0.9375rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+  
+  .nav-link {
+    min-height: 48px;
+    padding: 0.75rem 0;
+  }
+}
+
+@media (max-width: 480px) {
   .container {
     padding: 0 1rem;
   }
@@ -452,10 +676,8 @@
     padding: 3rem 0;
   }
   
-  .grid-cols-2,
-  .grid-cols-3,
-  .grid-cols-4 {
-    grid-template-columns: 1fr;
+  .hero {
+    padding: 5rem 0 3.5rem;
   }
   
   .hero-title {
@@ -463,24 +685,43 @@
   }
   
   .hero-subtitle {
-    font-size: 1.125rem;
+    font-size: 1rem;
   }
   
-  .nav {
-    display: none;
-  }
-  
-  .hero-actions {
-    flex-direction: column;
-    align-items: center;
+  .section-title {
+    font-size: 1.75rem;
   }
   
   .kit-card-content {
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
   
   .card {
-    padding: 1.5rem;
+    padding: 1.25rem;
+  }
+  
+  .search-form {
+    padding: 1rem;
+  }
+  
+  /* Mobile Footer */
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .section-title {
+    font-size: 1.625rem;
+  }
+  
+  .hero-actions .btn {
+    max-width: 100%;
   }
 }
 
