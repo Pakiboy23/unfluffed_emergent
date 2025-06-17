@@ -33,6 +33,9 @@ REGIONAL_CONFIG = {
 
 class PAAPIClient:
     def __init__(self, country: str):
+        if not AmazonApi:
+            raise HTTPException(status_code=503, detail="Amazon API not available")
+        
         config = REGIONAL_CONFIG[country]
         self.client = AmazonApi(
             access_key=os.environ['PAAPI_ACCESS_KEY'],
