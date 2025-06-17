@@ -17,7 +17,40 @@ const SCRUFF_IMAGES = {
   email: '/images/scruff/email.png'
 };
 
-const App = () => {
+// Scruff Image Component with fallback
+const ScruffImage = ({ imagePath, alt, className, fallbackEmoji = "🦝" }) => {
+  const [imageError, setImageError] = useState(false);
+  
+  const handleImageError = () => {
+    setImageError(true);
+  };
+  
+  if (imageError) {
+    return (
+      <div className={className} style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        fontSize: className.includes('scruff-hero') ? '48px' : 
+                className.includes('scruff-email') ? '40px' :
+                className.includes('scruff-section') ? '32px' :
+                className.includes('scruff-search') ? '32px' :
+                className.includes('scruff-kit') ? '24px' : '18px'
+      }}>
+        {fallbackEmoji}
+      </div>
+    );
+  }
+  
+  return (
+    <img 
+      src={imagePath}
+      alt={alt}
+      className={className + " scruff-actual-image"}
+      onError={handleImageError}
+    />
+  );
+};
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [showProductSearch, setShowProductSearch] = useState(false);
