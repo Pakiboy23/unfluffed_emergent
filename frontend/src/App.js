@@ -40,7 +40,7 @@ const App = () => {
   };
 
   // Enhanced Kit Card Component with API integration
-  const EnhancedKitCard = ({ title, description, imageUrl, affiliateUrl, searchKeywords }) => {
+  const EnhancedKitCard = ({ title, description, imageUrl, affiliateUrl, searchKeywords, scruffImage, scruffAlt }) => {
     const [livePrice, setLivePrice] = useState(null);
     const [availability, setAvailability] = useState('Check Amazon');
     const [isLoading, setIsLoading] = useState(false);
@@ -77,7 +77,7 @@ const App = () => {
     }, [searchKeywords]);
 
     return (
-      <div className="bg-gray-800 rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 group border border-gray-700 hover:border-neon-green">
+      <div className="bg-gray-800 rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 group border border-gray-700 hover:border-neon-green relative">
         <div className="relative h-64 overflow-hidden">
           <img 
             src={imageUrl} 
@@ -85,11 +85,22 @@ const App = () => {
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-          <div className="absolute top-4 right-4 bg-neon-green text-black px-3 py-1 rounded-full text-sm font-semibold">
-            TESTED
+          
+          {/* Scruff Mascot in corner */}
+          <div className="absolute top-4 left-4 w-16 h-16 rounded-full bg-neon-green/20 backdrop-blur-sm p-2 border border-neon-green/30">
+            <img 
+              src={scruffImage} 
+              alt={scruffAlt}
+              className="w-full h-full object-cover rounded-full"
+            />
           </div>
+          
+          <div className="absolute top-4 right-4 bg-neon-green text-black px-3 py-1 rounded-full text-sm font-semibold">
+            SCRUFF TESTED
+          </div>
+          
           {livePrice && (
-            <div className="absolute top-4 left-4 bg-black/80 text-neon-green px-3 py-1 rounded-full text-sm font-semibold">
+            <div className="absolute bottom-4 left-4 bg-black/80 text-neon-green px-3 py-1 rounded-full text-sm font-semibold">
               {livePrice.currency} ${livePrice.amount}
             </div>
           )}
@@ -101,7 +112,7 @@ const App = () => {
           <div className="flex items-center justify-between mb-4">
             <div className="text-neon-green font-semibold">
               <span className="text-2xl">★★★★★</span>
-              <span className="ml-2 text-sm">Real reviews</span>
+              <span className="ml-2 text-sm">Scruff approved</span>
             </div>
             {isLoading && (
               <div className="text-neon-green text-sm">
@@ -130,17 +141,36 @@ const App = () => {
     );
   };
 
-  // Product Search Component
+  // Product Search Component with Scruff
   const ProductSearchSection = () => (
-    <section className="py-20 bg-gray-800">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="search" className="py-20 bg-gray-800 relative">
+      <div className="absolute inset-0 opacity-5">
+        <div className="grid grid-cols-8 gap-4 h-full">
+          {[...Array(64)].map((_, i) => (
+            <div key={i} className="border border-neon-green"></div>
+          ))}
+        </div>
+      </div>
+      
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Find <span className="text-neon-green">Real</span> Products
-          </h2>
-          <p className="text-xl text-gray-400">
-            Search Amazon for products I've actually tested and recommend
-          </p>
+          <div className="flex items-center justify-center mb-6">
+            <div className="w-20 h-20 mr-4">
+              <img 
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
+                alt="Scruff with VR headset"
+                className="w-full h-full object-cover rounded-full border-2 border-neon-green"
+              />
+            </div>
+            <div>
+              <h2 className="text-4xl font-bold text-white mb-2">
+                Find <span className="text-neon-green">Real</span> Products
+              </h2>
+              <p className="text-lg text-gray-400">
+                Scruff's Amazon search engine - tested by your gay bestie
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="bg-gray-900 p-6 rounded-2xl border border-gray-700">
@@ -150,9 +180,9 @@ const App = () => {
               onChange={(e) => setSearchCountry(e.target.value)}
               className="px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-neon-green"
             >
-              <option value="US">United States</option>
-              <option value="UK">United Kingdom</option>
-              <option value="CA">Canada</option>
+              <option value="US">🇺🇸 United States</option>
+              <option value="UK">🇬🇧 United Kingdom</option>
+              <option value="CA">🇨🇦 Canada</option>
             </select>
             
             <input 
@@ -167,9 +197,16 @@ const App = () => {
             <button 
               onClick={handleProductSearch} 
               disabled={isSearching}
-              className="bg-neon-green text-black px-6 py-3 rounded-lg font-semibold hover:bg-neon-green/90 transition-all transform hover:scale-105 disabled:opacity-50"
+              className="bg-neon-green text-black px-6 py-3 rounded-lg font-semibold hover:bg-neon-green/90 transition-all transform hover:scale-105 disabled:opacity-50 flex items-center"
             >
-              {isSearching ? 'Searching...' : 'Search'}
+              {isSearching ? (
+                <>
+                  <span className="loading-spinner mr-2"></span>
+                  Searching...
+                </>
+              ) : (
+                'Search'
+              )}
             </button>
           </div>
 
@@ -220,9 +257,13 @@ const App = () => {
       <nav className="fixed top-0 w-full bg-black/80 backdrop-blur-lg z-50 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-neon-green rounded-full flex items-center justify-center">
-                <span className="text-black font-bold text-sm">U</span>
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-neon-green">
+                <img 
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
+                  alt="Scruff working at desk"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <span className="text-white font-bold text-xl">unfluffed</span>
             </div>
@@ -248,11 +289,24 @@ const App = () => {
         </div>
         
         <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-            No influencer sh*t.
-            <br />
-            <span className="text-neon-green">Just stuff that works.</span>
-          </h1>
+          <div className="flex items-center justify-center mb-8">
+            <div className="w-32 h-32 mr-6">
+              <img 
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
+                alt="Scruff with tech background"
+                className="w-full h-full object-cover rounded-full border-4 border-neon-green shadow-neon"
+              />
+            </div>
+            <div className="text-left">
+              <h1 className="text-5xl md:text-7xl font-bold text-white mb-2 leading-tight">
+                No influencer sh*t.
+              </h1>
+              <h2 className="text-3xl md:text-4xl font-bold text-neon-green">
+                Just stuff that works.
+              </h2>
+            </div>
+          </div>
+          
           <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
             I'm your gay bestie giving you the real no-BS truth you've grown to love, hate, and desperately need. 
             Curated gear that actually works - no sponsored nonsense.
@@ -268,7 +322,7 @@ const App = () => {
               href="#about" 
               className="border-2 border-neon-green text-neon-green px-8 py-4 rounded-lg font-semibold text-lg hover:bg-neon-green hover:text-black transition-all"
             >
-              Why Trust Us?
+              Why Trust Me?
             </a>
           </div>
         </div>
@@ -294,6 +348,8 @@ const App = () => {
               imageUrl="https://images.unsplash.com/photo-1661788902947-19ff0d8f50ea"
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/park-day-kit"
               searchKeywords="outdoor picnic gear"
+              scruffImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+              scruffAlt="Scruff hiking outdoors"
             />
 
             {/* Desk Setup Kit */}
@@ -303,6 +359,8 @@ const App = () => {
               imageUrl="https://images.unsplash.com/photo-1586202690666-e1f32e218afe"
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/desk-setup-kit"
               searchKeywords="desk setup accessories"
+              scruffImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+              scruffAlt="Scruff digital drawing"
             />
 
             {/* Smart Home Setup Kit */}
@@ -312,6 +370,8 @@ const App = () => {
               imageUrl="https://images.unsplash.com/photo-1525004351186-bdc426f3efaa"
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/smart-home-setup"
               searchKeywords="smart home devices"
+              scruffImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+              scruffAlt="Scruff with developer kit"
             />
 
             {/* Skin Care Essentials Kit */}
@@ -321,6 +381,8 @@ const App = () => {
               imageUrl="https://images.unsplash.com/photo-1633793566189-8e9fe6f817fc"
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/skincare-essentials"
               searchKeywords="skincare essentials"
+              scruffImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+              scruffAlt="Scruff winking with thumbs up"
             />
           </div>
         </div>
@@ -343,8 +405,12 @@ const App = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center group">
-              <div className="w-16 h-16 bg-neon-green/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-neon-green/30 transition-colors">
-                <span className="text-neon-green text-2xl">🔍</span>
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full overflow-hidden border-3 border-neon-green/30 group-hover:border-neon-green transition-colors">
+                <img 
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
+                  alt="Scruff with VR headset"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Actually Tested</h3>
               <p className="text-gray-400">
@@ -354,8 +420,12 @@ const App = () => {
             </div>
 
             <div className="text-center group">
-              <div className="w-16 h-16 bg-neon-green/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-neon-green/30 transition-colors">
-                <span className="text-neon-green text-2xl">🚫</span>
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full overflow-hidden border-3 border-neon-green/30 group-hover:border-neon-green transition-colors">
+                <img 
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
+                  alt="Scruff with phone checkmark"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h3 className="text-xl font-bold text-white mb-4">No Sponsored BS</h3>
               <p className="text-gray-400">
@@ -365,8 +435,12 @@ const App = () => {
             </div>
 
             <div className="text-center group">
-              <div className="w-16 h-16 bg-neon-green/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-neon-green/30 transition-colors">
-                <span className="text-neon-green text-2xl">💯</span>
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full overflow-hidden border-3 border-neon-green/30 group-hover:border-neon-green transition-colors">
+                <img 
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
+                  alt="Scruff coffee shop thumbs up"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Your Gay Bestie</h3>
               <p className="text-gray-400">
@@ -393,7 +467,7 @@ const App = () => {
               What People <span className="text-neon-green">Actually</span> Say
             </h2>
             <p className="text-xl text-gray-400">
-              Real reviews from real people. Shocking, we know.
+              Real reviews from real people. Shocking, I know.
             </p>
           </div>
 
@@ -459,12 +533,23 @@ const App = () => {
         ></div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Get <span className="text-neon-green">Unfluffed</span> Updates
-          </h2>
-          <p className="text-xl text-gray-400 mb-8">
-            New kits, honest reviews, zero spam. I hate inbox clutter as much as you do.
-          </p>
+          <div className="flex items-center justify-center mb-8">
+            <div className="w-24 h-24 mr-6">
+              <img 
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
+                alt="Scruff at window"
+                className="w-full h-full object-cover rounded-full border-3 border-neon-green shadow-neon"
+              />
+            </div>
+            <div className="text-left">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">
+                Get <span className="text-neon-green">Unfluffed</span> Updates
+              </h2>
+              <p className="text-xl text-gray-400">
+                New kits, honest reviews, zero spam. I hate inbox clutter as much as you do.
+              </p>
+            </div>
+          </div>
           
           <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <input
@@ -490,7 +575,7 @@ const App = () => {
           )}
           
           <p className="text-sm text-gray-500 mt-4">
-            No spam. Unsubscribe anytime. We're not monsters.
+            No spam. Unsubscribe anytime. I'm not a monster.
           </p>
         </div>
       </section>
@@ -500,9 +585,13 @@ const App = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-neon-green rounded-full flex items-center justify-center">
-                  <span className="text-black font-bold text-sm">U</span>
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-neon-green">
+                  <img 
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
+                    alt="Scruff logo"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <span className="text-white font-bold text-xl">unfluffed</span>
               </div>
@@ -541,7 +630,7 @@ const App = () => {
           
           <div className="border-t border-gray-800 mt-8 pt-8 text-center">
             <p className="text-gray-400 text-sm">
-              © 2025 unfluffed. All rights reserved. | Amazon Associate Disclaimer: We earn from qualifying purchases.
+              © 2025 unfluffed. All rights reserved. | Amazon Associate Disclaimer: I earn from qualifying purchases.
             </p>
           </div>
         </div>
