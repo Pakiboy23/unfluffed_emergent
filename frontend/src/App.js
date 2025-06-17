@@ -335,26 +335,25 @@ const App = () => {
         </div>
         
         <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
-          <div className="flex items-center justify-center mb-8">
+          <div className="flex flex-col items-center justify-center mb-8">
             <ScruffImage 
               imagePath={SCRUFF_IMAGES.hero}
-              alt="Scruff with tech background"
-              className="scruff-hero mr-6"
+              alt="Scruff hero"
+              className="scruff-hero mb-6"
             />
-            <div className="text-left">
+            <div className="text-center">
               <h1 className="text-5xl md:text-7xl font-bold text-white mb-2 leading-tight">
                 No influencer sh*t.
               </h1>
-              <h2 className="text-3xl md:text-4xl font-bold text-neon-green">
+              <h2 className="text-3xl md:text-4xl font-bold text-neon-green mb-4">
                 Just stuff that works.
               </h2>
+              <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                I'm your gay bestie giving you the real no-BS truth you've grown to love, hate, and desperately need. 
+                Curated gear that actually works - no sponsored nonsense.
+              </p>
             </div>
           </div>
-          
-          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            I'm your gay bestie giving you the real no-BS truth you've grown to love, hate, and desperately need. 
-            Curated gear that actually works - no sponsored nonsense.
-          </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
               href="#kits" 
