@@ -34,11 +34,20 @@ def test_amazon_product_search():
             "country": "US",
             "page": 1
         }
+        print(f"   Request: POST {API_BASE_URL}/products/search")
+        print(f"   Payload: {json.dumps(payload, indent=2)}")
+        
         response = requests.post(f"{API_BASE_URL}/products/search", json=payload)
+        
+        print(f"   Response Status: {response.status_code}")
         
         if response.status_code == 200:
             data = response.json()
             products = data.get("products", [])
+            cached = data.get("cached", False)
+            
+            print(f"   Response Data: {json.dumps(data, indent=2)[:500]}...")
+            print(f"   Cached: {cached}")
             
             if products:
                 print(f"✅ Amazon Product Search: SUCCESS - Found {len(products)} products")
@@ -55,6 +64,14 @@ def test_amazon_product_search():
                 return True, first_product.get('asin')
             else:
                 print("⚠️ Amazon Product Search: SUCCESS but no products found")
+                # Check logs for more information
+                print("   Checking backend logs for more information...")
+                try:
+                    import subprocess
+                    logs = subprocess.check_output("tail -n 20 /var/log/supervisor/backend.*.log", shell=True).decode('utf-8')
+                    print(f"   Recent logs:\n{logs}")
+                except Exception as log_e:
+                    print(f"   Could not retrieve logs: {str(log_e)}")
                 return True, None
         else:
             print(f"❌ Amazon Product Search: FAILED with status code {response.status_code}")
