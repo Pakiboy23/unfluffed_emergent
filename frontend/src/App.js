@@ -411,7 +411,7 @@ const App = () => {
                 <span className="text-white font-bold text-xl">unfluffed</span>
               </div>
               <p className="text-gray-400 text-sm">
-                Curated gear that actually works. No influencer nonsense.
+                Curated gear that actually works. No influencer nonsense. Made by your gay bestie.
               </p>
             </div>
             
