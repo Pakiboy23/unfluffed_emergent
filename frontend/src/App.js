@@ -576,14 +576,14 @@ const App = () => {
         ></div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex items-center justify-center mb-8">
+          <div className="flex items-center justify-center gap-3 mb-8">
             <ScruffImage 
               imagePath={SCRUFF_IMAGES.email}
               alt="Scruff encouraging newsletter signup"
-              className="scruff-email mr-6"
+              className="scruff-email"
             />
             <div className="text-left">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-1">
                 Get <span className="text-neon-green">Unfluffed</span> Updates
               </h2>
               <p className="text-xl text-gray-400">
