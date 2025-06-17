@@ -59,9 +59,9 @@
 }
 
 .scruff-hero {
-  width: 48px;
-  height: 48px;
-  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
   overflow: hidden;
   border: 1px solid #39FF14;
   background: rgba(57, 255, 20, 0.1);
@@ -70,9 +70,8 @@
   justify-content: center;
   font-weight: bold;
   color: #000;
-  font-size: 16px;
+  font-size: 12px;
   flex-shrink: 0;
-  box-shadow: 0 0 8px rgba(57, 255, 20, 0.2);
 }
 
 .scruff-section {
