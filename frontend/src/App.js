@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
-// Scruff image paths - we'll add these as we upload them
+// Scruff image paths - now loaded from GitHub!
 const SCRUFF_IMAGES = {
   logo: '/images/scruff/logo.png',
   hero: '/images/scruff/hero.png', 
