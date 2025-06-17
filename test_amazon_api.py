@@ -19,11 +19,10 @@ def test_amazon_api():
         
         # Initialize Amazon API
         amazon = AmazonApi(
-            access_key=access_key,
-            secret_key=secret_key,
-            partner_tag=partner_tag,
-            country="US",
-            throttling=1.5
+            key=access_key,
+            secret=secret_key,
+            tag=partner_tag,
+            country="US"
         )
         
         print("Amazon API initialized successfully!")
