@@ -314,7 +314,7 @@ const App = () => {
               </div>
               <p className="text-gray-400">
                 "Finally, someone who doesn't try to sell me overpriced garbage. 
-                The desk kit actually improved my workflow."
+                The desk kit actually improved my workflow. This guy knows his stuff."
               </p>
             </div>
 
