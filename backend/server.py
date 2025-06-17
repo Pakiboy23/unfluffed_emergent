@@ -41,8 +41,7 @@ class PAAPIClient:
             access_key=os.environ['PAAPI_ACCESS_KEY'],
             secret_key=os.environ['PAAPI_SECRET_KEY'],
             partner_tag=os.environ['PARTNER_TAG'],
-            host=config["host"],
-            region=config["region"],
+            country=country.upper(),
             throttling=1.5
         )
         self.country = country
