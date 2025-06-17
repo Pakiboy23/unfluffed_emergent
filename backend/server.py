@@ -189,7 +189,7 @@ async def search_products(request: ProductSearchRequest):
                         "price": price_data,
                         "rating": rating,
                         "review_count": review_count,
-                        "affiliate_url": f"https://www.amazon.com/dp/{asin}?tag={os.environ['PARTNER_TAG']}" if request.country == "US" else f"https://www.amazon.{request.country.lower()}/dp/{asin}?tag={os.environ['PARTNER_TAG']}",
+                        "affiliate_url": f"https://www.amazon.com/dp/{asin}?tag={paapi_client.partner_tag}" if request.country == "US" else f"https://www.amazon.{request.country.lower()}/dp/{asin}?tag={paapi_client.partner_tag}",
                         "country": request.country,
                         "last_updated": datetime.utcnow().isoformat()
                     }
