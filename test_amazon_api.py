@@ -32,25 +32,23 @@ def test_amazon_api():
         response = amazon.search_items(
             keywords="laptop",
             search_index="Electronics",
-            item_count=3,
-            resources=[
-                "Images.Primary.Large",
-                "ItemInfo.Title",
-                "Offers.Listings.Price"
-            ]
+            item_count=3
         )
         
         print(f"Search response type: {type(response)}")
+        print(f"Response data: {response}")
         
-        if hasattr(response, 'items') and response.items:
-            print(f"Found {len(response.items)} items")
-            for i, item in enumerate(response.items[:2]):
-                print(f"Item {i+1}: {item.asin}")
-                if hasattr(item, 'item_info') and item.item_info and item.item_info.title:
-                    print(f"  Title: {item.item_info.title.display_value}")
+        if hasattr(response, 'data') and response.data:
+            items = response.data.get('SearchResult', {}).get('Items', [])
+            print(f"Found {len(items)} items")
+            for i, item in enumerate(items[:2]):
+                asin = item.get('ASIN', 'No ASIN')
+                print(f"Item {i+1}: {asin}")
+                item_info = item.get('ItemInfo', {})
+                if 'Title' in item_info and 'DisplayValue' in item_info['Title']:
+                    print(f"  Title: {item_info['Title']['DisplayValue']}")
         else:
             print("No items found or response format unexpected")
-            print(f"Response content: {response}")
             
     except Exception as e:
         print(f"Error: {str(e)}")
