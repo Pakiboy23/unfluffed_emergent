@@ -20,6 +20,61 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
+# Amazon API Configuration
+REGIONAL_CONFIG = {
+    "US": {"host": "webservices.amazon.com", "region": "us-east-1"},
+    "UK": {"host": "webservices.amazon.co.uk", "region": "eu-west-1"},
+    "CA": {"host": "webservices.amazon.ca", "region": "us-east-1"}
+}
+
+class PAAPIClient:
+    def __init__(self, country: str):
+        config = REGIONAL_CONFIG[country]
+        self.client = AmazonApi(
+            access_key=os.environ['PAAPI_ACCESS_KEY'],
+            secret_key=os.environ['PAAPI_SECRET_KEY'],
+            partner_tag=os.environ['PARTNER_TAG'],
+            host=config["host"],
+            region=config["region"],
+            throttling=1.5
+        )
+        self.country = country
+    
+    def search_products(self, keywords: str, page: int = 1):
+        try:
+            return self.client.search_items(
+                keywords=keywords,
+                search_index="All",
+                item_count=min(10, 10),  # Max 10 items per request
+                resources=[
+                    "Images.Primary.Large",
+                    "ItemInfo.Title",
+                    "Offers.Listings.Price", 
+                    "CustomerReviews.StarRating",
+                    "CustomerReviews.Count"
+                ]
+            )
+        except Exception as e:
+            logging.error(f"PAAPI search error: {str(e)}")
+            return None
+    
+    def get_product_details(self, asin: str):
+        try:
+            return self.client.get_items(
+                [asin],
+                resources=[
+                    "Images.Primary.Large",
+                    "ItemInfo.Title",
+                    "Offers.Listings.Price",
+                    "Offers.Listings.Availability.Message",
+                    "CustomerReviews.StarRating",
+                    "CustomerReviews.Count"
+                ]
+            )
+        except Exception as e:
+            logging.error(f"PAAPI get item error: {str(e)}")
+            return None
+
 # Create the main app without a prefix
 app = FastAPI()
 
