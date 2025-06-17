@@ -104,6 +104,67 @@
 
 user_problem_statement: "Test the unfluffed.co affiliate marketing landing page functionality. This is a premium dark-themed landing page with neon green (#39FF14) accents for an affiliate marketing site with a sarcastic, no-BS tone."
 
+backend:
+  - task: "API Health Check"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing of the basic API health endpoint."
+      - working: true
+        agent: "testing"
+        comment: "The API health endpoint (/api/) is working correctly and returns a 200 OK response with the message 'Hello World'."
+
+  - task: "Amazon Product Search"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing of the Amazon product search endpoint."
+      - working: false
+        agent: "testing"
+        comment: "The Amazon product search endpoint (/api/products/search) is implemented but not working correctly. The API returns a 200 OK response but with an empty products list. The backend logs show an error: 'PAAPI search error: The partner tag is invalid or not present.' The Amazon API credentials (PAAPI_ACCESS_KEY, PAAPI_SECRET_KEY, PARTNER_TAG) are correctly configured in the .env file, but the Amazon API is returning an error about the partner tag being invalid or not present."
+
+  - task: "Product Details"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing of the product details endpoint."
+      - working: false
+        agent: "testing"
+        comment: "The product details endpoint (/api/products/{asin}) is implemented but not working correctly. The API returns a 404 Not Found response when trying to get details for a valid ASIN. The backend logs show an error: 'PAAPI get item error: AmazonApi.get_items() missing 1 required positional argument: 'items''. This suggests there's an issue with the method signature for the get_items() method in the Amazon API client."
+
+  - task: "Database Connection"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing of the database connection via the status endpoint."
+      - working: true
+        agent: "testing"
+        comment: "The database connection is working correctly. The status endpoint (/api/status) successfully creates and retrieves status checks from the MongoDB database."
+
 frontend:
   - task: "Navigation & Layout"
     implemented: true
@@ -264,19 +325,18 @@ frontend:
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 3
+  test_sequence: 4
   run_ui: true
 
 test_plan:
   current_focus:
-    - "Navigation & Layout"
-    - "Hero Section"
-    - "Featured Kits Section"
-    - "Email Signup Section"
-    - "Interactive Elements"
-    - "Enhanced Kit Cards with Live Data"
-    - "Product Search Section"
-  stuck_tasks: []
+    - "API Health Check"
+    - "Amazon Product Search"
+    - "Product Details"
+    - "Database Connection"
+  stuck_tasks:
+    - "Amazon Product Search"
+    - "Product Details"
   test_all: true
   test_priority: "high_first"
 
@@ -289,3 +349,5 @@ agent_communication:
     message: "Testing the enhanced unfluffed.co landing page with new Amazon API integration features. Found that the UI components for the new features (enhanced kit cards with live pricing, product search section) are implemented correctly, but the backend API is returning 500 errors. The error logs show 'amazon.paapi not available, Amazon API features will be disabled' and 'Search failed: 503: Amazon API not available'. All existing functionality (navigation, hero section, kit cards layout, why trust me section, reviews, email signup, footer) continues to work correctly."
   - agent: "testing"
     message: "Completed testing of the Amazon API integration on the unfluffed.co landing page. The Amazon API integration is now working correctly. The enhanced kit cards display live pricing data in the top-left corner (e.g., 'USD $65.99' for Park Day Kit, 'USD $7.19' for Desk Setup Kit) and availability status ('In Stock'). The product search section is fully implemented with a search input, country dropdown (US, UK, Canada), and search button. The UI components are properly styled with the dark theme and neon green accents consistent with the rest of the site. All existing functionality continues to work correctly."
+  - agent: "testing"
+    message: "Tested the backend API endpoints for the unfluffed.co website. Found that the API health check and database connection endpoints are working correctly, but the Amazon API integration is not working. The Amazon product search endpoint returns an empty list of products, and the product details endpoint returns a 404 Not Found response. The backend logs show errors related to the Amazon API: 'PAAPI search error: The partner tag is invalid or not present.' and 'PAAPI get item error: AmazonApi.get_items() missing 1 required positional argument: 'items''. The Amazon API credentials are correctly configured in the .env file, but there seems to be an issue with the partner tag or the method signature for the get_items() method."
