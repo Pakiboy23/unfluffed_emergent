@@ -58,7 +58,7 @@ class PAAPIClient:
     
     def get_product_details(self, asin: str):
         try:
-            return self.client.get_items(item_ids=[asin])
+            return self.client.get_items(items=[asin])
         except Exception as e:
             logging.error(f"PAAPI get item error: {str(e)}")
             return None
