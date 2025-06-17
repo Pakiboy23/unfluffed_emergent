@@ -124,10 +124,21 @@ const App = () => {
               unfluffed
             </a>
             <nav className="nav">
-              <a href="#kits" className="nav-link">Kits</a>
-              <a href="#search" className="nav-link">Search</a>
-              <a href="#about" className="nav-link">About</a>
+              <a href="#kits" className="nav-link" onClick={(e) => handleNavClick(e, 'kits')}>Kits</a>
+              <a href="#search" className="nav-link" onClick={(e) => handleNavClick(e, 'search')}>Search</a>
+              <a href="#about" className="nav-link" onClick={(e) => handleNavClick(e, 'about')}>About</a>
             </nav>
+            <button className="mobile-nav-toggle" onClick={toggleMobileMenu}>
+              {isMobileMenuOpen ? '✕' : '☰'}
+            </button>
+          </div>
+        </div>
+        {/* Mobile Navigation */}
+        <div className={`mobile-nav ${isMobileMenuOpen ? 'active' : ''}`}>
+          <div className="mobile-nav-links">
+            <a href="#kits" className="mobile-nav-link" onClick={(e) => handleNavClick(e, 'kits')}>Kits</a>
+            <a href="#search" className="mobile-nav-link" onClick={(e) => handleNavClick(e, 'search')}>Search</a>
+            <a href="#about" className="mobile-nav-link" onClick={(e) => handleNavClick(e, 'about')}>About</a>
           </div>
         </div>
       </header>
