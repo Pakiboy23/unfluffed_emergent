@@ -51,6 +51,7 @@ const ScruffImage = ({ imagePath, alt, className, fallbackEmoji = "🦝" }) => {
     />
   );
 };
+const App = () => {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [showProductSearch, setShowProductSearch] = useState(false);
