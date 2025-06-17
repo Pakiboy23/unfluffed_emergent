@@ -10,9 +10,9 @@ from typing import List, Optional
 import uuid
 from datetime import datetime, timedelta
 try:
-    from amazon.paapi import AmazonApi
+    from amazon_paapi import AmazonApi
 except ImportError:
-    logging.warning("amazon.paapi not available, Amazon API features will be disabled")
+    logging.warning("amazon_paapi not available, Amazon API features will be disabled")
     AmazonApi = None
 
 
