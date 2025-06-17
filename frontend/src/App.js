@@ -49,8 +49,8 @@ const ScruffImage = ({ imagePath, alt, className, fallbackEmoji = "🦝" }) => {
       className={className + " scruff-actual-image"}
       onError={handleImageError}
     />
-  );
 };
+
 const App = () => {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
