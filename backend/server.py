@@ -67,7 +67,7 @@ class PAAPIClient:
     def get_product_details(self, asin: str):
         try:
             return self.client.get_items(
-                [asin],
+                item_ids=[asin],
                 resources=[
                     "Images.Primary.Large",
                     "ItemInfo.Title",
