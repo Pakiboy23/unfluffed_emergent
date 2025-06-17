@@ -39,7 +39,14 @@ class PAAPIClient:
         config = REGIONAL_CONFIG[country]
         access_key = os.environ['PAAPI_ACCESS_KEY']
         secret_key = os.environ['PAAPI_SECRET_KEY']
-        partner_tag = os.environ['PARTNER_TAG']
+        
+        # Get the base partner tag without any suffix
+        base_partner_tag = os.environ['PARTNER_TAG']
+        if "-" in base_partner_tag:
+            base_partner_tag = base_partner_tag.split("-")[0]
+        
+        # Add the correct suffix for the region
+        partner_tag = f"{base_partner_tag}{config['tag_suffix']}"
         
         logging.info(f"Initializing PAAPIClient with country={country}, access_key={access_key[:4]}..., partner_tag={partner_tag}")
         
@@ -50,6 +57,7 @@ class PAAPIClient:
             country.upper()
         )
         self.country = country
+        self.partner_tag = partner_tag
     
     def search_products(self, keywords: str, page: int = 1):
         try:
