@@ -9,7 +9,11 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 import uuid
 from datetime import datetime, timedelta
-from amazon.paapi import AmazonApi
+try:
+    from amazon.paapi import AmazonApi
+except ImportError:
+    logging.warning("amazon.paapi not available, Amazon API features will be disabled")
+    AmazonApi = None
 
 
 ROOT_DIR = Path(__file__).parent
