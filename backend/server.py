@@ -256,7 +256,7 @@ async def get_product_details(asin: str, country: str = "US"):
             "availability": availability,
             "rating": rating,
             "review_count": review_count,
-            "affiliate_url": f"https://amazon.{country.lower()}/dp/{item.asin}?tag={os.environ['PARTNER_TAG']}",
+            "affiliate_url": f"https://www.amazon.com/dp/{item.asin}?tag={os.environ['PARTNER_TAG']}" if country == "US" else f"https://www.amazon.{country.lower()}/dp/{item.asin}?tag={os.environ['PARTNER_TAG']}",
             "country": country,
             "last_updated": datetime.utcnow().isoformat()
         }
