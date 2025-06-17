@@ -124,6 +124,204 @@ async def get_status_checks():
     status_checks = await db.status_checks.find().to_list(1000)
     return [StatusCheck(**status_check) for status_check in status_checks]
 
+@api_router.post("/products/search")
+async def search_products(request: ProductSearchRequest):
+    try:
+        # Check MongoDB cache first (cache for 1 hour)
+        cache_key = f"{request.query}_{request.country}_{request.page}"
+        cached = await db.product_searches.find_one({
+            "cache_key": cache_key,
+            "expires_at": {"$gt": datetime.utcnow()}
+        })
+        
+        if cached:
+            return {"products": cached["results"], "cached": True}
+        
+        # PAAPI search request
+        paapi_client = PAAPIClient(request.country)
+        response = paapi_client.search_products(request.query, request.page)
+        
+        if not response or not hasattr(response, 'items') or not response.items:
+            return {"products": [], "cached": False}
+        
+        # Process results
+        processed_products = []
+        for item in response.items:
+            try:
+                price_data = None
+                if hasattr(item, 'offers') and item.offers and item.offers.listings:
+                    price_info = item.offers.listings[0].price
+                    if price_info:
+                        price_data = {
+                            "amount": float(price_info.amount) if price_info.amount else None,
+                            "currency": price_info.currency if price_info.currency else None
+                        }
+                
+                rating = None
+                review_count = None
+                if hasattr(item, 'customer_reviews') and item.customer_reviews:
+                    if item.customer_reviews.star_rating:
+                        rating = float(item.customer_reviews.star_rating.value)
+                    if item.customer_reviews.count:
+                        review_count = int(item.customer_reviews.count)
+                
+                product_data = {
+                    "asin": item.asin,
+                    "title": item.item_info.title.display_value if item.item_info and item.item_info.title else "Unknown",
+                    "image_url": item.images.primary.large.url if item.images and item.images.primary and item.images.primary.large else None,
+                    "price": price_data,
+                    "rating": rating,
+                    "review_count": review_count,
+                    "affiliate_url": f"https://amazon.{request.country.lower()}/dp/{item.asin}?tag={os.environ['PARTNER_TAG']}",
+                    "country": request.country,
+                    "last_updated": datetime.utcnow().isoformat()
+                }
+                processed_products.append(product_data)
+            except Exception as item_error:
+                logging.error(f"Error processing item {item.asin}: {str(item_error)}")
+                continue
+        
+        # Cache results for 1 hour
+        await db.product_searches.insert_one({
+            "cache_key": cache_key,
+            "results": processed_products,
+            "expires_at": datetime.utcnow() + timedelta(hours=1),
+            "created_at": datetime.utcnow()
+        })
+        
+        return {"products": processed_products, "cached": False}
+        
+    except Exception as e:
+        logging.error(f"Search failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Search failed: {str(e)}")
+
+@api_router.get("/products/{asin}")
+async def get_product_details(asin: str, country: str = "US"):
+    try:
+        # Check cache first (cache for 30 minutes)
+        cached = await db.products.find_one({
+            "asin": asin,
+            "country": country,
+            "expires_at": {"$gt": datetime.utcnow()}
+        })
+        
+        if cached:
+            return {"product": cached["data"], "cached": True}
+        
+        # Fetch from PAAPI
+        paapi_client = PAAPIClient(country)
+        response = paapi_client.get_product_details(asin)
+        
+        if not response or not response.items:
+            raise HTTPException(status_code=404, detail="Product not found")
+        
+        item = response.items[0]
+        
+        price_data = None
+        availability = "Unknown"
+        if hasattr(item, 'offers') and item.offers and item.offers.listings:
+            price_info = item.offers.listings[0].price
+            if price_info:
+                price_data = {
+                    "amount": float(price_info.amount) if price_info.amount else None,
+                    "currency": price_info.currency if price_info.currency else None
+                }
+            if item.offers.listings[0].availability:
+                availability = item.offers.listings[0].availability.message
+        
+        rating = None
+        review_count = None
+        if hasattr(item, 'customer_reviews') and item.customer_reviews:
+            if item.customer_reviews.star_rating:
+                rating = float(item.customer_reviews.star_rating.value)
+            if item.customer_reviews.count:
+                review_count = int(item.customer_reviews.count)
+        
+        product_data = {
+            "asin": item.asin,
+            "title": item.item_info.title.display_value if item.item_info and item.item_info.title else "Unknown",
+            "image_url": item.images.primary.large.url if item.images and item.images.primary else None,
+            "price": price_data,
+            "availability": availability,
+            "rating": rating,
+            "review_count": review_count,
+            "affiliate_url": f"https://amazon.{country.lower()}/dp/{item.asin}?tag={os.environ['PARTNER_TAG']}",
+            "country": country,
+            "last_updated": datetime.utcnow().isoformat()
+        }
+        
+        # Cache for 30 minutes
+        await db.products.update_one(
+            {"asin": asin, "country": country},
+            {
+                "$set": {
+                    "data": product_data,
+                    "expires_at": datetime.utcnow() + timedelta(minutes=30),
+                    "updated_at": datetime.utcnow()
+                }
+            },
+            upsert=True
+        )
+        
+        return {"product": product_data, "cached": False}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"Failed to get product details: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get product details: {str(e)}")
+
+@api_router.get("/products/{asin}/price")
+async def get_real_time_price(asin: str, country: str = "US"):
+    try:
+        # Check for recent price data (5 minutes)
+        recent_price = await db.prices.find_one({
+            "asin": asin,
+            "country": country,
+            "expires_at": {"$gt": datetime.utcnow()}
+        })
+        
+        if recent_price:
+            return {"price": recent_price["price_data"], "cached": True}
+        
+        # Fetch fresh price data
+        paapi_client = PAAPIClient(country)
+        response = paapi_client.get_product_details(asin)
+        
+        if not response or not response.items or not response.items[0].offers:
+            raise HTTPException(status_code=404, detail="Price not available")
+        
+        item = response.items[0]
+        price_info = item.offers.listings[0].price
+        
+        price_data = {
+            "amount": float(price_info.amount) if price_info.amount else None,
+            "currency": price_info.currency if price_info.currency else None,
+            "availability": item.offers.listings[0].availability.message if item.offers.listings[0].availability else "Unknown",
+            "last_updated": datetime.utcnow().isoformat()
+        }
+        
+        # Cache price for 5 minutes
+        await db.prices.update_one(
+            {"asin": asin, "country": country},
+            {
+                "$set": {
+                    "price_data": price_data,
+                    "expires_at": datetime.utcnow() + timedelta(minutes=5),
+                    "updated_at": datetime.utcnow()
+                }
+            },
+            upsert=True
+        )
+        
+        return {"price": price_data, "cached": False}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"Failed to get price: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get price: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
