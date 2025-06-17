@@ -57,7 +57,7 @@ class PAAPIClient:
         self.country = country
         self.partner_tag = partner_tag
     
-    def search_products(self, keywords: str, page: int = 1):
+    def search_products(self, keywords: str, page: int = 1, filters: dict = None):
         try:
             if self.client:
                 return self.client.search_items(
@@ -66,9 +66,10 @@ class PAAPIClient:
                     item_page=page
                 )
             else:
-                # Mock implementation for testing
-                logging.info("Using mock implementation for search_products")
+                # Enhanced mock implementation for testing with more variety
+                logging.info("Using enhanced mock implementation for search_products")
                 from collections import namedtuple
+                import random
                 
                 Item = namedtuple('Item', ['asin', 'item_info', 'images', 'offers', 'customer_reviews'])
                 ItemInfo = namedtuple('ItemInfo', ['title'])
@@ -85,25 +86,53 @@ class PAAPIClient:
                 
                 Response = namedtuple('Response', ['items'])
                 
-                # Create mock items
+                # More diverse product categories and data
+                product_templates = [
+                    {"category": "Electronics", "base_price": 50, "titles": ["Bluetooth Headphones", "Wireless Earbuds", "Gaming Mouse", "USB-C Cable", "Phone Case"]},
+                    {"category": "Home", "base_price": 25, "titles": ["Coffee Mug", "Throw Pillow", "LED Light Strip", "Plant Pot", "Storage Box"]},
+                    {"category": "Beauty", "base_price": 15, "titles": ["Moisturizer", "Face Mask", "Lip Balm", "Nail Polish", "Hair Serum"]},
+                    {"category": "Sports", "base_price": 30, "titles": ["Yoga Mat", "Water Bottle", "Resistance Bands", "Running Shoes", "Gym Towel"]},
+                    {"category": "Books", "base_price": 12, "titles": ["Self-Help Book", "Cookbook", "Fiction Novel", "Tech Guide", "Art Book"]}
+                ]
+                
+                # Create mock items with variety
                 items = []
-                for i in range(5):
-                    title = Title(f"Bluetooth Headphones {i+1}")
+                for i in range(15):  # More products for better filtering
+                    template = random.choice(product_templates)
+                    title_base = random.choice(template["titles"])
+                    
+                    # Add search query relevance
+                    if keywords.lower() in title_base.lower():
+                        title = Title(f"{title_base} Pro {i+1}")
+                    else:
+                        title = Title(f"{title_base} {keywords.title()} Edition")
+                    
                     item_info = ItemInfo(title)
                     
-                    large = Large(f"https://example.com/image{i+1}.jpg")
+                    # Varied images
+                    large = Large(f"https://images.unsplash.com/photo-{1500000000 + i}?w=300&h=300&fit=crop")
                     primary = Primary(large)
                     images = Images(primary)
                     
-                    price = Price(f"{50 + i*10}.99", "USD")
-                    availability = Availability("In Stock")
+                    # Varied pricing
+                    base_price = template["base_price"]
+                    price_variation = random.uniform(0.8, 2.5)
+                    final_price = round(base_price * price_variation, 2)
+                    price = Price(str(final_price), "USD")
+                    
+                    # Varied availability
+                    availabilities = ["In Stock", "Only 3 left", "Limited time", "Prime delivery"]
+                    availability = Availability(random.choice(availabilities))
                     listing = Listing(price, availability)
                     offers = Offers([listing])
                     
-                    star_rating = StarRating(f"{4 + i*0.2}")
-                    customer_reviews = CustomerReviews(star_rating, 100 + i*50)
+                    # Varied ratings
+                    rating_value = round(random.uniform(3.5, 5.0), 1)
+                    review_count = random.randint(50, 500)
+                    star_rating = StarRating(str(rating_value))
+                    customer_reviews = CustomerReviews(star_rating, review_count)
                     
-                    item = Item(f"B07PXGQC1{i}", item_info, images, offers, customer_reviews)
+                    item = Item(f"B{random.randint(10000000, 99999999)}", item_info, images, offers, customer_reviews)
                     items.append(item)
                 
                 return Response(items)
