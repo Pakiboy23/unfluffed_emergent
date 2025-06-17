@@ -38,11 +38,10 @@ class PAAPIClient:
         
         config = REGIONAL_CONFIG[country]
         self.client = AmazonApi(
-            access_key=os.environ['PAAPI_ACCESS_KEY'],
-            secret_key=os.environ['PAAPI_SECRET_KEY'],
-            partner_tag=os.environ['PARTNER_TAG'],
-            country=country.upper(),
-            throttling=1.5
+            key=os.environ['PAAPI_ACCESS_KEY'],
+            secret=os.environ['PAAPI_SECRET_KEY'],
+            tag=os.environ['PARTNER_TAG'],
+            country=country.upper()
         )
         self.country = country
     
