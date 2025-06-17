@@ -204,14 +204,14 @@ const App = () => {
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
-          <div className="flex flex-col items-center justify-center mb-6">
+          <div className="flex items-center justify-center gap-3 mb-6">
             <ScruffImage 
               imagePath={SCRUFF_IMAGES.search}
               alt="Scruff search assistant"
-              className="scruff-search mb-4"
+              className="scruff-search"
             />
-            <div className="text-center">
-              <h2 className="text-4xl font-bold text-white mb-2">
+            <div className="text-left">
+              <h2 className="text-4xl font-bold text-white mb-1">
                 Find <span className="text-neon-green">Real</span> Products
               </h2>
               <p className="text-lg text-gray-400">
