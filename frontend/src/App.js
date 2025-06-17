@@ -87,12 +87,8 @@ const App = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
           
           {/* Scruff Mascot in corner */}
-          <div className="absolute top-4 left-4 w-16 h-16 rounded-full bg-neon-green/20 backdrop-blur-sm p-2 border border-neon-green/30">
-            <img 
-              src={scruffImage} 
-              alt={scruffAlt}
-              className="w-full h-full object-cover rounded-full"
-            />
+          <div className="absolute top-4 left-4 scruff-kit-badge">
+            🦝
           </div>
           
           <div className="absolute top-4 right-4 bg-neon-green text-black px-3 py-1 rounded-full text-sm font-semibold">
