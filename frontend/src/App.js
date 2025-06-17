@@ -20,6 +20,21 @@ const App = () => {
   const [searchCountry, setSearchCountry] = useState('US');
   const [isSearching, setIsSearching] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Advanced search states
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [searchFilters, setSearchFilters] = useState({
+    minPrice: '',
+    maxPrice: '',
+    minRating: '',
+    category: '',
+    sortBy: 'relevance'
+  });
+  const [searchSuggestions, setSearchSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [totalResults, setTotalResults] = useState(0);
+  const [isUsingAdvancedSearch, setIsUsingAdvancedSearch] = useState(false);
 
   const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
