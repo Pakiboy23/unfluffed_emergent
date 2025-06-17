@@ -358,7 +358,7 @@ const App = () => {
       {/* Footer */}
       <footer className="section-sm bg-secondary" style={{ borderTop: '1px solid #262626' }}>
         <div className="container">
-          <div className="grid grid-cols-4">
+          <div className="grid grid-cols-2 md:grid-cols-4">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="logo-icon">U</div>
