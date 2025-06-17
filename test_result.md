@@ -340,9 +340,7 @@ test_plan:
     - "Amazon Product Search"
     - "Product Details"
     - "Database Connection"
-  stuck_tasks:
-    - "Amazon Product Search"
-    - "Product Details"
+  stuck_tasks: []
   test_all: true
   test_priority: "high_first"
 
