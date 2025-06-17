@@ -330,9 +330,11 @@ const App = () => {
         
         <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
           <div className="flex items-center justify-center mb-8">
-            <div className="scruff-hero mr-6">
-              🦝
-            </div>
+            <ScruffImage 
+              imagePath={SCRUFF_IMAGES.hero}
+              alt="Scruff with tech background"
+              className="scruff-hero mr-6"
+            />
             <div className="text-left">
               <h1 className="text-5xl md:text-7xl font-bold text-white mb-2 leading-tight">
                 No influencer sh*t.
