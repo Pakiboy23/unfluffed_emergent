@@ -264,7 +264,7 @@ frontend:
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 2
+  test_sequence: 3
   run_ui: true
 
 test_plan:
@@ -276,9 +276,7 @@ test_plan:
     - "Interactive Elements"
     - "Enhanced Kit Cards with Live Data"
     - "Product Search Section"
-  stuck_tasks:
-    - "Enhanced Kit Cards with Live Data"
-    - "Product Search Section"
+  stuck_tasks: []
   test_all: true
   test_priority: "high_first"
 
