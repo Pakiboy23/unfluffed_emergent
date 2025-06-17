@@ -428,7 +428,7 @@ const App = () => {
             <div>
               <h4 className="text-white font-semibold mb-4">About</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="text-gray-400 hover:text-neon-green transition-colors">Our Process</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-neon-green transition-colors">My Process</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-neon-green transition-colors">Contact</a></li>
               </ul>
             </div>
