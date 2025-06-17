@@ -306,11 +306,9 @@ const App = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <ScruffImage 
-                imagePath={SCRUFF_IMAGES.logo}
-                alt="Scruff logo"
-                className="scruff-logo"
-              />
+              <div className="w-8 h-8 bg-neon-green rounded-full flex items-center justify-center">
+                <span className="text-black font-bold text-sm">U</span>
+              </div>
               <span className="text-white font-bold text-xl">unfluffed</span>
             </div>
             <div className="hidden md:flex space-x-8">
