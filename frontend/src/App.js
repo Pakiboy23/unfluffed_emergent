@@ -555,21 +555,12 @@ const App = () => {
         ></div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <ScruffImage 
-              imagePath={SCRUFF_IMAGES.email}
-              alt="Scruff encouraging newsletter signup"
-              className="scruff-email"
-            />
-            <div className="text-left">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-1">
-                Get <span className="text-neon-green">Unfluffed</span> Updates
-              </h2>
-              <p className="text-xl text-gray-400">
-                New kits, honest reviews, zero spam. I hate inbox clutter as much as you do.
-              </p>
-            </div>
-          </div>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            Get <span className="text-neon-green">Unfluffed</span> Updates
+          </h2>
+          <p className="text-xl text-gray-400 mb-8">
+            New kits, honest reviews, zero spam. I hate inbox clutter as much as you do.
+          </p>
           
           <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <input
