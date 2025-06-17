@@ -622,9 +622,11 @@ const App = () => {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <div className="scruff-logo">
-                  🦝
-                </div>
+                <ScruffImage 
+                  imagePath={SCRUFF_IMAGES.logo}
+                  alt="Scruff logo"
+                  className="scruff-logo"
+                />
                 <span className="text-white font-bold text-xl">unfluffed</span>
               </div>
               <p className="text-gray-400 text-sm">
