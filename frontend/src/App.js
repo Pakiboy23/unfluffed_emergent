@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
-// Scruff image paths - now loaded from GitHub!
+// Scruff image paths - properly assigned individual images
 const SCRUFF_IMAGES = {
-  logo: '/images/scruff/logo.png',
-  hero: '/images/scruff/hero.png', 
-  parkDay: '/images/scruff/park-day.png',
-  deskSetup: '/images/scruff/desk-setup.png',
-  smartHome: '/images/scruff/smart-home.png',
-  skincare: '/images/scruff/skincare.png',
-  trust: '/images/scruff/trust.png',
-  tested: '/images/scruff/tested.png',
-  noSponsored: '/images/scruff/no-sponsored.png',
-  search: '/images/scruff/search.png',
-  email: '/images/scruff/email.png'
+  logo: '/images/scruff/logo.png',                    // Asset 1
+  hero: '/images/scruff/hero.png',                    // Asset 2
+  parkDay: '/images/scruff/park-day.png',             // Asset 3
+  deskSetup: '/images/scruff/desk-setup.png',         // Asset 4 (will get new one)
+  smartHome: '/images/scruff/smart-home.png',         // Asset 5 (will get new one) 
+  skincare: '/images/scruff/skincare.png',            // Asset 6 (will get new one)
+  trust: '/images/scruff/trust.png',                  // Asset 7
+  tested: '/images/scruff/tested.png',                // Asset 10
+  noSponsored: '/images/scruff/no-sponsored.png',     // Asset 11
+  search: '/images/scruff/search.png',                // Asset 8 (will get individual)
+  email: '/images/scruff/email.png'                   // Asset 9
 };
 
 // Scruff Image Component with fallback
