@@ -183,7 +183,7 @@ const App = () => {
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">Find Products</h2>
-            <p className="section-subtitle">Search Amazon for products I've actually tested and recommend.</p>
+            <p className="section-subtitle">Try me - search for anything and I bet I've tried something like it and have a recommendation. This search pulls from Amazon, but every link goes through me so you support the site.</p>
           </div>
           <div className="search-form" style={{ maxWidth: '600px', margin: '0 auto' }}>
             <select 
@@ -199,7 +199,7 @@ const App = () => {
               type="text" 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search products..."
+              placeholder="Search anything..."
               className="search-input"
               onKeyPress={(e) => e.key === 'Enter' && handleProductSearch()}
             />
@@ -213,44 +213,49 @@ const App = () => {
           </div>
 
           {searchResults.length > 0 && (
-            <div className="grid grid-cols-3" style={{ marginTop: '3rem' }}>
-              {searchResults.map(product => (
-                <div key={product.asin} className="card">
-                  <img 
-                    src={product.image_url} 
-                    alt={product.title}
-                    style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '1.5rem' }}
-                  />
-                  <h4 className="text-base font-medium text-primary mb-3" style={{ 
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden'
-                  }}>{product.title}</h4>
-                  
-                  <div className="flex items-center justify-between mb-4">
-                    {product.price && (
-                      <span className="text-accent font-semibold">
-                        {product.price.currency} ${product.price.amount}
-                      </span>
-                    )}
-                    {product.rating && (
-                      <div className="text-sm text-secondary">
-                        ★ {product.rating} ({product.review_count})
-                      </div>
-                    )}
+            <div>
+              <p className="text-center text-sm text-secondary" style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
+                These are Amazon results with my affiliate links. The ones in my kits above are what I've actually tested.
+              </p>
+              <div className="grid grid-cols-3">
+                {searchResults.map(product => (
+                  <div key={product.asin} className="card">
+                    <img 
+                      src={product.image_url} 
+                      alt={product.title}
+                      style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '1.5rem' }}
+                    />
+                    <h4 className="text-base font-medium text-primary mb-3" style={{ 
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden'
+                    }}>{product.title}</h4>
+                    
+                    <div className="flex items-center justify-between mb-4">
+                      {product.price && (
+                        <span className="text-accent font-semibold">
+                          {product.price.currency} ${product.price.amount}
+                        </span>
+                      )}
+                      {product.rating && (
+                        <div className="text-sm text-secondary">
+                          ★ {product.rating} ({product.review_count})
+                        </div>
+                      )}
+                    </div>
+                    
+                    <a 
+                      href={product.affiliate_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="btn btn-ghost w-full"
+                    >
+                      View on Amazon
+                    </a>
                   </div>
-                  
-                  <a 
-                    href={product.affiliate_url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="btn btn-ghost w-full"
-                  >
-                    View on Amazon
-                  </a>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
         </div>
