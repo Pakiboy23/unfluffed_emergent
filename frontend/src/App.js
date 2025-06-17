@@ -228,7 +228,8 @@ const App = () => {
             </div>
             <div className="hidden md:flex space-x-8">
               <a href="#kits" className="text-gray-300 hover:text-neon-green transition-colors">Kits</a>
-              <a href="#about" className="text-gray-300 hover:text-neon-green transition-colors">Why Us</a>
+              <a href="#search" className="text-gray-300 hover:text-neon-green transition-colors">Search</a>
+              <a href="#about" className="text-gray-300 hover:text-neon-green transition-colors">Why Me</a>
               <a href="#reviews" className="text-gray-300 hover:text-neon-green transition-colors">Reviews</a>
             </div>
           </div>
