@@ -37,10 +37,16 @@ class PAAPIClient:
             raise HTTPException(status_code=503, detail="Amazon API not available")
         
         config = REGIONAL_CONFIG[country]
+        access_key = os.environ['PAAPI_ACCESS_KEY']
+        secret_key = os.environ['PAAPI_SECRET_KEY']
+        partner_tag = os.environ['PARTNER_TAG']
+        
+        logging.info(f"Initializing PAAPIClient with country={country}, access_key={access_key[:4]}..., partner_tag={partner_tag}")
+        
         self.client = AmazonApi(
-            os.environ['PAAPI_ACCESS_KEY'],
-            os.environ['PAAPI_SECRET_KEY'],
-            os.environ['PARTNER_TAG'],
+            access_key,
+            secret_key,
+            partner_tag,
             country.upper()
         )
         self.country = country
