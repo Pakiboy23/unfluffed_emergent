@@ -5,7 +5,7 @@ import './App.css';
 // Scruff image paths - unique individual images
 const SCRUFF_IMAGES = {
   logo: '/images/scruff/logo.png',                         // Asset 1
-  hero: '/images/scruff/hero.png',                         // Asset 2
+  hero: '/images/scruff/hero-branded.png',                 // New branded UNFLUFFED image
   parkDay: '/images/scruff/park-day.png',                  // Asset 3 
   deskSetup: '/images/scruff/desk-setup-new.png',          // Asset 12 (unique)
   smartHome: '/images/scruff/smart-home-new.png',          // Asset 13 (unique)
