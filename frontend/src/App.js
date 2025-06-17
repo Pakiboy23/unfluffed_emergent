@@ -390,7 +390,7 @@ const App = () => {
               imageUrl="https://images.unsplash.com/photo-1661788902947-19ff0d8f50ea"
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/park-day-kit"
               searchKeywords="outdoor picnic gear"
-              scruffImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+              scruffImage={SCRUFF_IMAGES.parkDay}
               scruffAlt="Scruff hiking outdoors"
             />
 
@@ -401,7 +401,7 @@ const App = () => {
               imageUrl="https://images.unsplash.com/photo-1586202690666-e1f32e218afe"
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/desk-setup-kit"
               searchKeywords="desk setup accessories"
-              scruffImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+              scruffImage={SCRUFF_IMAGES.deskSetup}
               scruffAlt="Scruff digital drawing"
             />
 
@@ -412,7 +412,7 @@ const App = () => {
               imageUrl="https://images.unsplash.com/photo-1525004351186-bdc426f3efaa"
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/smart-home-setup"
               searchKeywords="smart home devices"
-              scruffImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+              scruffImage={SCRUFF_IMAGES.smartHome}
               scruffAlt="Scruff with developer kit"
             />
 
@@ -423,7 +423,7 @@ const App = () => {
               imageUrl="https://images.unsplash.com/photo-1633793566189-8e9fe6f817fc"
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/skincare-essentials"
               searchKeywords="skincare essentials"
-              scruffImage="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+              scruffImage={SCRUFF_IMAGES.skincare}
               scruffAlt="Scruff winking with thumbs up"
             />
           </div>
