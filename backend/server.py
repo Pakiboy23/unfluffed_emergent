@@ -38,9 +38,9 @@ class PAAPIClient:
         
         config = REGIONAL_CONFIG[country]
         self.client = AmazonApi(
-            key=os.environ['PAAPI_ACCESS_KEY'],
-            secret=os.environ['PAAPI_SECRET_KEY'],
-            tag=os.environ['PARTNER_TAG'],
+            access_key=os.environ['PAAPI_ACCESS_KEY'],
+            secret_key=os.environ['PAAPI_SECRET_KEY'],
+            associate_tag=os.environ['PARTNER_TAG'],
             country=country.upper()
         )
         self.country = country
@@ -50,7 +50,7 @@ class PAAPIClient:
             return self.client.search_items(
                 keywords=keywords,
                 search_index="All",
-                item_count=min(10, 10)
+                item_page=page
             )
         except Exception as e:
             logging.error(f"PAAPI search error: {str(e)}")
