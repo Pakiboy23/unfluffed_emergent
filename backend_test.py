@@ -85,15 +85,25 @@ def test_product_details(asin):
     """Test the product details endpoint with a valid ASIN"""
     if not asin:
         print("\n⚠️ Skipping Product Details Test: No ASIN available")
-        return False
+        # Use a hardcoded ASIN for testing
+        asin = "B07PXGQC1Q"  # Common ASIN for a popular product
+        print(f"   Using hardcoded ASIN for testing: {asin}")
     
     print(f"\n🔍 Testing Product Details for ASIN: {asin}...")
     try:
-        response = requests.get(f"{API_BASE_URL}/products/{asin}?country=US")
+        url = f"{API_BASE_URL}/products/{asin}?country=US"
+        print(f"   Request: GET {url}")
+        
+        response = requests.get(url)
+        print(f"   Response Status: {response.status_code}")
         
         if response.status_code == 200:
             data = response.json()
             product = data.get("product", {})
+            cached = data.get("cached", False)
+            
+            print(f"   Response Data: {json.dumps(data, indent=2)[:500]}...")
+            print(f"   Cached: {cached}")
             
             if product:
                 print("✅ Product Details: SUCCESS")
@@ -105,10 +115,26 @@ def test_product_details(asin):
                 return True
             else:
                 print("⚠️ Product Details: SUCCESS but no product data found")
+                # Check logs for more information
+                print("   Checking backend logs for more information...")
+                try:
+                    import subprocess
+                    logs = subprocess.check_output("tail -n 20 /var/log/supervisor/backend.*.log", shell=True).decode('utf-8')
+                    print(f"   Recent logs:\n{logs}")
+                except Exception as log_e:
+                    print(f"   Could not retrieve logs: {str(log_e)}")
                 return False
         else:
             print(f"❌ Product Details: FAILED with status code {response.status_code}")
             print(f"   Response: {response.text}")
+            # Check logs for more information
+            print("   Checking backend logs for more information...")
+            try:
+                import subprocess
+                logs = subprocess.check_output("tail -n 20 /var/log/supervisor/backend.*.log", shell=True).decode('utf-8')
+                print(f"   Recent logs:\n{logs}")
+            except Exception as log_e:
+                print(f"   Could not retrieve logs: {str(log_e)}")
             return False
     except Exception as e:
         print(f"❌ Product Details: ERROR - {str(e)}")
