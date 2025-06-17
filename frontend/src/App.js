@@ -447,9 +447,11 @@ const App = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center group">
-              <div className="scruff-section mx-auto mb-6 group-hover:scale-110 transition-transform">
-                🔬
-              </div>
+              <ScruffImage 
+                imagePath={SCRUFF_IMAGES.tested}
+                alt="Scruff testing products"
+                className="scruff-section mx-auto mb-6 group-hover:scale-110 transition-transform"
+              />
               <h3 className="text-xl font-bold text-white mb-4">Actually Tested</h3>
               <p className="text-gray-400">
                 I buy it, use it, break it, then recommend it. Or don't. 
@@ -458,9 +460,11 @@ const App = () => {
             </div>
 
             <div className="text-center group">
-              <div className="scruff-section mx-auto mb-6 group-hover:scale-110 transition-transform">
-                📱
-              </div>
+              <ScruffImage 
+                imagePath={SCRUFF_IMAGES.noSponsored}
+                alt="Scruff rejecting sponsored content"
+                className="scruff-section mx-auto mb-6 group-hover:scale-110 transition-transform"
+              />
               <h3 className="text-xl font-bold text-white mb-4">No Sponsored BS</h3>
               <p className="text-gray-400">
                 I'm not getting paid to say nice things. If it sucks, I'll tell you. 
@@ -469,9 +473,11 @@ const App = () => {
             </div>
 
             <div className="text-center group">
-              <div className="scruff-section mx-auto mb-6 group-hover:scale-110 transition-transform">
-                🦝
-              </div>
+              <ScruffImage 
+                imagePath={SCRUFF_IMAGES.trust}
+                alt="Scruff as your gay bestie"
+                className="scruff-section mx-auto mb-6 group-hover:scale-110 transition-transform"
+              />
               <h3 className="text-xl font-bold text-white mb-4">Your Gay Bestie</h3>
               <p className="text-gray-400">
                 I'm giving you the real truth you've grown to love, hate, and desperately need. 
