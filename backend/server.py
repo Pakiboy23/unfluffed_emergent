@@ -323,7 +323,8 @@ async def get_real_time_price(asin: str, country: str = "US"):
             "amount": float(price_info.amount) if price_info.amount else None,
             "currency": price_info.currency if price_info.currency else None,
             "availability": item.offers.listings[0].availability.message if item.offers.listings[0].availability else "Unknown",
-            "last_updated": datetime.utcnow().isoformat()
+            "last_updated": datetime.utcnow().isoformat(),
+            "affiliate_url": f"https://www.amazon.com/dp/{asin}?tag={paapi_client.partner_tag}" if country == "US" else f"https://www.amazon.{country.lower()}/dp/{asin}?tag={paapi_client.partner_tag}"
         }
         
         # Cache price for 5 minutes
