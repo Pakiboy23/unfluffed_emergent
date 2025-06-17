@@ -152,40 +152,49 @@ async def search_products(request: ProductSearchRequest):
         
         # Process results
         processed_products = []
-        for item in response.items:
-            try:
-                price_data = None
-                if hasattr(item, 'offers') and item.offers and item.offers.listings:
-                    price_info = item.offers.listings[0].price
-                    if price_info:
-                        price_data = {
-                            "amount": float(price_info.amount) if price_info.amount else None,
-                            "currency": price_info.currency if price_info.currency else None
-                        }
-                
-                rating = None
-                review_count = None
-                if hasattr(item, 'customer_reviews') and item.customer_reviews:
-                    if item.customer_reviews.star_rating:
-                        rating = float(item.customer_reviews.star_rating.value)
-                    if item.customer_reviews.count:
-                        review_count = int(item.customer_reviews.count)
-                
-                product_data = {
-                    "asin": item.asin,
-                    "title": item.item_info.title.display_value if item.item_info and item.item_info.title else "Unknown",
-                    "image_url": item.images.primary.large.url if item.images and item.images.primary and item.images.primary.large else None,
-                    "price": price_data,
-                    "rating": rating,
-                    "review_count": review_count,
-                    "affiliate_url": f"https://amazon.{request.country.lower()}/dp/{item.asin}?tag={os.environ['PARTNER_TAG']}",
-                    "country": request.country,
-                    "last_updated": datetime.utcnow().isoformat()
-                }
-                processed_products.append(product_data)
-            except Exception as item_error:
-                logging.error(f"Error processing item {item.asin}: {str(item_error)}")
-                continue
+        if response and hasattr(response, 'items') and response.items:
+            for item in response.items:
+                try:
+                    price_data = None
+                    if hasattr(item, 'offers') and item.offers and item.offers.listings:
+                        price_info = item.offers.listings[0].price
+                        if price_info:
+                            price_data = {
+                                "amount": float(price_info.amount) if hasattr(price_info, 'amount') and price_info.amount else None,
+                                "currency": price_info.currency if hasattr(price_info, 'currency') and price_info.currency else None
+                            }
+                    
+                    rating = None
+                    review_count = None
+                    if hasattr(item, 'customer_reviews') and item.customer_reviews:
+                        if hasattr(item.customer_reviews, 'star_rating') and item.customer_reviews.star_rating:
+                            rating = float(item.customer_reviews.star_rating.value)
+                        if hasattr(item.customer_reviews, 'count') and item.customer_reviews.count:
+                            review_count = int(item.customer_reviews.count)
+                    
+                    title = "Unknown"
+                    if hasattr(item, 'item_info') and item.item_info and hasattr(item.item_info, 'title') and item.item_info.title:
+                        title = item.item_info.title.display_value
+                    
+                    image_url = None
+                    if hasattr(item, 'images') and item.images and hasattr(item.images, 'primary') and item.images.primary and hasattr(item.images.primary, 'large'):
+                        image_url = item.images.primary.large.url
+                    
+                    product_data = {
+                        "asin": item.asin,
+                        "title": title,
+                        "image_url": image_url,
+                        "price": price_data,
+                        "rating": rating,
+                        "review_count": review_count,
+                        "affiliate_url": f"https://amazon.{request.country.lower()}/dp/{item.asin}?tag={os.environ['PARTNER_TAG']}",
+                        "country": request.country,
+                        "last_updated": datetime.utcnow().isoformat()
+                    }
+                    processed_products.append(product_data)
+                except Exception as item_error:
+                    logging.error(f"Error processing item {item.asin if hasattr(item, 'asin') else 'unknown'}: {str(item_error)}")
+                    continue
         
         # Cache results for 1 hour
         await db.product_searches.insert_one({
