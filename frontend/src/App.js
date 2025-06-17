@@ -316,83 +316,240 @@ const App = () => {
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">Find Products</h2>
-            <p className="section-subtitle">Try me - search for anything and I bet I've tried something like it and have a recommendation. This search pulls from Amazon, but every link goes through me so you support the site.</p>
+            <p className="section-subtitle">
+              Advanced search with filters and sorting. Every link goes through my affiliate program to support the site.
+            </p>
           </div>
-          <div className="search-form" style={{ maxWidth: '600px', margin: '0 auto' }}>
-            <select 
-              value={searchCountry} 
-              onChange={(e) => setSearchCountry(e.target.value)}
-              className="search-select"
-            >
-              <option value="US">US</option>
-              <option value="UK">UK</option>
-              <option value="CA">CA</option>
-            </select>
-            <input 
-              type="text" 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search anything..."
-              className="search-input"
-              onKeyPress={(e) => e.key === 'Enter' && handleProductSearch()}
-            />
-            <button 
-              onClick={handleProductSearch} 
-              disabled={isSearching}
-              className="btn btn-primary"
-            >
-              {isSearching ? 'Searching...' : 'Search'}
-            </button>
+          
+          {/* Main Search Form */}
+          <div className="search-container" style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <div className="search-form">
+              <select 
+                value={searchCountry} 
+                onChange={(e) => setSearchCountry(e.target.value)}
+                className="search-select"
+              >
+                <option value="US">US</option>
+                <option value="UK">UK</option>
+                <option value="CA">CA</option>
+              </select>
+              
+              <div className="search-input-container" style={{ position: 'relative', flex: 1 }}>
+                <input 
+                  type="text" 
+                  value={searchQuery}
+                  onChange={handleSearchInputChange}
+                  placeholder="Search for anything..."
+                  className="search-input"
+                  onKeyPress={(e) => e.key === 'Enter' && handleProductSearch(isUsingAdvancedSearch)}
+                  onFocus={() => searchSuggestions.length > 0 && setShowSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                />
+                
+                {/* Search Suggestions */}
+                {showSuggestions && searchSuggestions.length > 0 && (
+                  <div className="search-suggestions">
+                    {searchSuggestions.slice(0, 5).map((suggestion, index) => (
+                      <div 
+                        key={index}
+                        className="search-suggestion-item"
+                        onClick={() => handleSuggestionClick(suggestion)}
+                      >
+                        🔍 {suggestion}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
+              <button 
+                onClick={() => handleProductSearch(isUsingAdvancedSearch)} 
+                disabled={isSearching}
+                className="btn btn-primary"
+              >
+                {isSearching ? 'Searching...' : 'Search'}
+              </button>
+            </div>
+            
+            {/* Advanced Filters Toggle */}
+            <div className="text-center" style={{ marginTop: '1rem' }}>
+              <button 
+                onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                className="btn-filter-toggle"
+              >
+                {showAdvancedFilters ? '📋 Hide Filters' : '⚙️ Advanced Filters'} 
+                {hasActiveFilters() && <span className="filter-indicator">●</span>}
+              </button>
+            </div>
+            
+            {/* Advanced Filters Panel */}
+            {showAdvancedFilters && (
+              <div className="advanced-filters">
+                <div className="filter-grid">
+                  {/* Price Range */}
+                  <div className="filter-group">
+                    <label className="filter-label">Price Range</label>
+                    <div className="price-inputs">
+                      <input
+                        type="number"
+                        placeholder="Min $"
+                        value={searchFilters.minPrice}
+                        onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+                        className="filter-input"
+                      />
+                      <span className="price-separator">to</span>
+                      <input
+                        type="number"
+                        placeholder="Max $"
+                        value={searchFilters.maxPrice}
+                        onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+                        className="filter-input"
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Rating */}
+                  <div className="filter-group">
+                    <label className="filter-label">Minimum Rating</label>
+                    <select
+                      value={searchFilters.minRating}
+                      onChange={(e) => handleFilterChange('minRating', e.target.value)}
+                      className="filter-select"
+                    >
+                      <option value="">Any Rating</option>
+                      <option value="4">4+ Stars</option>
+                      <option value="4.5">4.5+ Stars</option>
+                      <option value="5">5 Stars Only</option>
+                    </select>
+                  </div>
+                  
+                  {/* Category */}
+                  <div className="filter-group">
+                    <label className="filter-label">Category</label>
+                    <select
+                      value={searchFilters.category}
+                      onChange={(e) => handleFilterChange('category', e.target.value)}
+                      className="filter-select"
+                    >
+                      <option value="">All Categories</option>
+                      {categories.map(cat => (
+                        <option key={cat.value} value={cat.value}>
+                          {cat.name} ({cat.count})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  
+                  {/* Sort By */}
+                  <div className="filter-group">
+                    <label className="filter-label">Sort By</label>
+                    <select
+                      value={searchFilters.sortBy}
+                      onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+                      className="filter-select"
+                    >
+                      <option value="relevance">Relevance</option>
+                      <option value="price_low">Price: Low to High</option>
+                      <option value="price_high">Price: High to Low</option>
+                      <option value="rating">Highest Rated</option>
+                      <option value="review_count">Most Reviews</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div className="filter-actions">
+                  <button 
+                    onClick={() => {
+                      handleProductSearch(true);
+                      setIsUsingAdvancedSearch(true);
+                    }}
+                    className="btn btn-primary"
+                    disabled={isSearching}
+                  >
+                    Apply Filters
+                  </button>
+                  {hasActiveFilters() && (
+                    <button 
+                      onClick={clearFilters}
+                      className="btn btn-ghost"
+                    >
+                      Clear All
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
+          {/* Search Results */}
           {searchResults.length > 0 && (
-            <div>
-              <p className="text-center text-sm text-secondary" style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
-                These are Amazon results with my affiliate links. The ones in my kits above are what I've actually tested.
-              </p>
+            <div style={{ marginTop: '3rem' }}>
+              {/* Results Header */}
+              <div className="results-header">
+                <p className="results-count">
+                  Found {totalResults} results{searchQuery && ` for "${searchQuery}"`}
+                  {hasActiveFilters() && ' (filtered)'}
+                </p>
+                {hasActiveFilters() && (
+                  <div className="active-filters">
+                    {searchFilters.minPrice && <span className="filter-tag">Min: ${searchFilters.minPrice}</span>}
+                    {searchFilters.maxPrice && <span className="filter-tag">Max: ${searchFilters.maxPrice}</span>}
+                    {searchFilters.minRating && <span className="filter-tag">{searchFilters.minRating}+ Stars</span>}
+                    {searchFilters.category && <span className="filter-tag">{searchFilters.category}</span>}
+                    {searchFilters.sortBy !== 'relevance' && <span className="filter-tag">Sorted by {searchFilters.sortBy.replace('_', ' ')}</span>}
+                  </div>
+                )}
+                <p className="affiliate-disclaimer">
+                  These are Amazon results with my affiliate links. The ones in my kits above are what I've actually tested.
+                </p>
+              </div>
+              
+              {/* Product Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {searchResults.map(product => (
-                  <div key={product.asin} className="card">
-                    <img 
-                      src={product.image_url} 
-                      alt={product.title}
-                      style={{ 
-                        width: '100%', 
-                        height: '160px', 
-                        objectFit: 'cover', 
-                        borderRadius: '8px', 
-                        marginBottom: '1.5rem'
-                      }}
-                    />
-                    <h4 className="text-base font-medium text-primary mb-3" style={{ 
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                      minHeight: '2.5rem'
-                    }}>{product.title}</h4>
-                    
-                    <div className="flex items-center justify-between mb-4">
-                      {product.price && (
-                        <span className="text-accent font-semibold">
-                          {product.price.currency} ${product.price.amount}
-                        </span>
-                      )}
-                      {product.rating && (
-                        <div className="text-sm text-secondary">
-                          ★ {product.rating} ({product.review_count})
+                  <div key={product.asin} className="product-card">
+                    <div className="product-image-container">
+                      <img 
+                        src={product.image_url} 
+                        alt={product.title}
+                        className="product-image"
+                      />
+                      {product.category && (
+                        <div className="product-category-badge">
+                          {product.category}
                         </div>
                       )}
                     </div>
                     
-                    <a 
-                      href={product.affiliate_url} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="btn btn-ghost w-full"
-                    >
-                      View on Amazon
-                    </a>
+                    <div className="product-content">
+                      <h4 className="product-title">{product.title}</h4>
+                      
+                      <div className="product-meta">
+                        {product.price && (
+                          <span className="product-price">
+                            {product.price.currency} ${product.price.amount}
+                          </span>
+                        )}
+                        {product.rating && (
+                          <div className="product-rating">
+                            <span className="stars">★</span>
+                            <span>{product.rating}</span>
+                            {product.review_count && (
+                              <span className="review-count">({product.review_count})</span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      
+                      <a 
+                        href={product.affiliate_url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="btn btn-ghost w-full"
+                      >
+                        View on Amazon
+                      </a>
+                    </div>
                   </div>
                 ))}
               </div>
