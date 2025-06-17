@@ -420,6 +420,8 @@ const App = () => {
               <ul className="space-y-2 text-sm">
                 <li><a href="#" className="text-gray-400 hover:text-neon-green transition-colors">Park Day Kit</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-neon-green transition-colors">Desk Setup Kit</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-neon-green transition-colors">Smart Home Setup</a></li>
+                <li><a href="#" className="text-gray-400 hover:text-neon-green transition-colors">Skin Care Essentials</a></li>
               </ul>
             </div>
             
