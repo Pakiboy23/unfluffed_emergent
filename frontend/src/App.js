@@ -2,6 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
+// Scruff image paths - we'll add these as we upload them
+const SCRUFF_IMAGES = {
+  logo: '/images/scruff/logo.png',
+  hero: '/images/scruff/hero.png', 
+  parkDay: '/images/scruff/park-day.png',
+  deskSetup: '/images/scruff/desk-setup.png',
+  smartHome: '/images/scruff/smart-home.png',
+  skincare: '/images/scruff/skincare.png',
+  trust: '/images/scruff/trust.png',
+  tested: '/images/scruff/tested.png',
+  noSponsored: '/images/scruff/no-sponsored.png',
+  search: '/images/scruff/search.png',
+  email: '/images/scruff/email.png'
+};
+
 const App = () => {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
