@@ -150,28 +150,28 @@ const App = () => {
               title="Park Day Kit"
               description="Everything for outdoor adventures that won't break, leak, or disappoint you when it matters most."
               imageUrl="https://images.unsplash.com/photo-1661788902947-19ff0d8f50ea"
-              affiliateUrl="https://www.amazon.com/shop/haarisshariff/list/1VJ8K9QG9XJQE?tag=haarisshariff-20"
+              affiliateUrl="https://www.amazon.com/shop/haarisshariff/list/19LAI2JMPGQJT?ref_=cm_sw_r_cp_ud_aipsflist_98SGZHEKTX8E14ATJT8G"
               scruffImage={SCRUFF_IMAGES.parkDay}
             />
             <KitCard
               title="Desk Setup Kit"
               description="Productivity gear that actually makes you productive. No RGB nonsense, no aesthetic fluff."
               imageUrl="https://images.unsplash.com/photo-1586202690666-e1f32e218afe"
-              affiliateUrl="https://www.amazon.com/shop/haarisshariff/list/2K9XL7YM4NQPR?tag=haarisshariff-20"
+              affiliateUrl="https://www.amazon.com/shop/haarisshariff/list/11EQI7H7IWUUE?ref_=cm_sw_r_cp_ud_aipsflist_B1BYSGN6MNZJ2NCVXXDY"
               scruffImage={SCRUFF_IMAGES.deskSetup}
             />
             <KitCard
               title="Smart Home Setup"
               description="Home automation without the computer science degree requirement or endless troubleshooting."
               imageUrl="https://images.unsplash.com/photo-1525004351186-bdc426f3efaa"
-              affiliateUrl="https://www.amazon.com/shop/haarisshariff/list/3M8WN5ZL6OSTU?tag=haarisshariff-20"
+              affiliateUrl="https://www.amazon.com/shop/haarisshariff/list/2JU1WTBQMG48Y?ref_=cm_sw_r_cp_ud_aipsflist_ZJHC3V6WN24NBENSHV11"
               scruffImage={SCRUFF_IMAGES.smartHome}
             />
             <KitCard
               title="Skin Care Essentials"
               description="The routine that works without 47 steps, expensive serums, or breaking the bank."
               imageUrl="https://images.unsplash.com/photo-1633793566189-8e9fe6f817fc"
-              affiliateUrl="https://www.amazon.com/shop/haarisshariff/list/4N7VR3WK8PQXY?tag=haarisshariff-20"
+              affiliateUrl="https://www.amazon.com/shop/haarisshariff/list/RZDP1I7G8U93?ref_=cm_sw_r_cp_ud_aipsflist_72HZKVVF944MHTJQ7WN6"
               scruffImage={SCRUFF_IMAGES.skincare}
             />
           </div>
