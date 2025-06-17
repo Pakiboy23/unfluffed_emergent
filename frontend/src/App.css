@@ -59,20 +59,20 @@
 }
 
 .scruff-hero {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
   overflow: hidden;
-  border: 2px solid #39FF14;
+  border: 1px solid #39FF14;
   background: rgba(57, 255, 20, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   color: #000;
-  font-size: 20px;
+  font-size: 16px;
   flex-shrink: 0;
-  box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.2);
 }
 
 .scruff-section {
