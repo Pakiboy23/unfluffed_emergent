@@ -327,7 +327,7 @@ const App = () => {
           <div className="flex flex-col items-center justify-center mb-8">
             <ScruffImage 
               imagePath={SCRUFF_IMAGES.hero}
-              alt="Scruff with UNFLUFFED branding"
+              alt="Scruff mascot"
               className="scruff-hero mb-6"
               fallbackEmoji="🦝"
             />
