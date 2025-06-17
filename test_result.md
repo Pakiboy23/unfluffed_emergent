@@ -140,7 +140,7 @@ backend:
 
   - task: "Product Details"
     implemented: true
-    working: false
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
@@ -152,6 +152,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "The product details endpoint (/api/products/{asin}) is implemented but not working correctly. The API returns a 404 Not Found response when trying to get details for a valid ASIN. The backend logs show an error: 'PAAPI get item error: AmazonApi.get_items() missing 1 required positional argument: 'items''. This suggests there's an issue with the method signature for the get_items() method in the Amazon API client."
+      - working: true
+        agent: "testing"
+        comment: "The product details endpoint (/api/products/{asin}) is now working correctly. The API returns a 200 OK response with detailed product information. The product data includes ASIN, title, image URL, price, availability, rating, review count, and affiliate URL. The affiliate URL is correctly formatted with the partner tag. The mock implementation is used for testing purposes since the actual Amazon API credentials are not valid."
 
   - task: "Database Connection"
     implemented: true
