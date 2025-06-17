@@ -241,21 +241,10 @@ button:focus {
   transform: scale(0.98);
 }
 
-/* Success states */
-.success-state {
-  background: linear-gradient(135deg, #39FF14, #2dd10f);
-  color: #000;
-  animation: successPulse 0.5s ease-out;
-}
-
-@keyframes successPulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
+/* Line clamp utility for text truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
