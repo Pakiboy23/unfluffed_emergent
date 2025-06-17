@@ -225,6 +225,36 @@ frontend:
         agent: "testing"
         comment: "All interactive elements work as expected. Hover animations on buttons, cards, and links show appropriate color changes and scaling effects. Navigation links and CTA buttons scroll smoothly to their respective sections. Form interactions (focus, input, submit) work correctly with proper visual feedback."
 
+  - task: "Enhanced Kit Cards with Live Data"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing of enhanced kit cards with live pricing data from Amazon API."
+      - working: false
+        agent: "testing"
+        comment: "The UI components for enhanced kit cards are implemented correctly. The cards have placeholders for live pricing in the top-left corner and availability status. However, the backend API is returning 500 errors with 'amazon.paapi not available, Amazon API features will be disabled' in the logs. The kit cards still display correctly with their images, descriptions, and affiliate links, but the live pricing and availability data is not being populated."
+
+  - task: "Product Search Section"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Initial testing of the new product search section with multi-region support."
+      - working: false
+        agent: "testing"
+        comment: "The UI components for the product search section are implemented correctly. The search input, country dropdown (US, UK, Canada), and search button are present and styled correctly. The 'Search' navigation link works and scrolls to the search section. However, the search functionality is not working due to backend API errors (500 responses). The error logs show 'Search failed: 503: Amazon API not available'."
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
