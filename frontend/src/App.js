@@ -22,7 +22,7 @@ const App = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-neon-green rounded-full flex items-center justify-center">
-                <span className="text-black font-bold text-sm">S</span>
+                <span className="text-black font-bold text-sm">U</span>
               </div>
               <span className="text-white font-bold text-xl">unfluffed</span>
             </div>
