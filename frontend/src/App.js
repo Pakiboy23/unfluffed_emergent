@@ -151,12 +151,8 @@ const App = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-6">
-            <div className="w-20 h-20 mr-4">
-              <img 
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
-                alt="Scruff with VR headset"
-                className="w-full h-full object-cover rounded-full border-2 border-neon-green"
-              />
+            <div className="scruff-search mr-4">
+              🦝
             </div>
             <div>
               <h2 className="text-4xl font-bold text-white mb-2">
