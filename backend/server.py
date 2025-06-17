@@ -179,6 +179,30 @@ class ProductSearchRequest(BaseModel):
     country: str = "US"
     page: int = 1
 
+class AdvancedSearchRequest(BaseModel):
+    query: str
+    country: str = "US"
+    page: int = 1
+    # Filters
+    min_price: Optional[float] = None
+    max_price: Optional[float] = None
+    min_rating: Optional[float] = None
+    category: Optional[str] = None
+    availability: Optional[str] = None
+    # Sorting
+    sort_by: Optional[str] = "relevance"  # relevance, price_low, price_high, rating, review_count
+    # Search features
+    include_suggestions: bool = False
+
+class SearchSuggestion(BaseModel):
+    query: str
+    count: int
+
+class CategoryData(BaseModel):
+    name: str
+    value: str
+    count: int
+
 class ProductData(BaseModel):
     asin: str
     title: str
