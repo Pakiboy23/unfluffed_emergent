@@ -363,12 +363,13 @@ const App = () => {
         ></div>
         
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Get <span className="text-neon-green">Unfluffed</span> Updates
-          </h2>
-          <p className="text-xl text-gray-400 mb-8">
-            New kits, honest reviews, zero spam. We hate inbox clutter as much as you do.
-          </p>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Get <span className="text-neon-green">Unfluffed</span> Updates
+            </h2>
+            <p className="text-xl text-gray-400 mb-8">
+              New kits, honest reviews, zero spam. I hate inbox clutter as much as you do.
+            </p>
           
           <form onSubmit={handleEmailSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <input
