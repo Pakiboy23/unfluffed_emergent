@@ -287,148 +287,40 @@ const App = () => {
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* Park Day Kit */}
-            <div className="bg-gray-800 rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 group border border-gray-700 hover:border-neon-green">
-              <div className="relative h-64 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1661788902947-19ff0d8f50ea" 
-                  alt="Park Day Kit"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute top-4 right-4 bg-neon-green text-black px-3 py-1 rounded-full text-sm font-semibold">
-                  TESTED
-                </div>
-              </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-white mb-3">Park Day Kit</h3>
-                <p className="text-gray-400 mb-6">
-                  Everything you need for a day outside that won't break, leak, or make you look like a tourist. 
-                  I've tested this stuff through rain, shine, and questionable picnic choices.
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="text-neon-green font-semibold">
-                    <span className="text-2xl">★★★★★</span>
-                    <span className="ml-2 text-sm">Real reviews</span>
-                  </div>
-                  <a 
-                    href="https://www.amazon.com/shop/haarisshariff-20/list/park-day-kit" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-neon-green text-black px-6 py-3 rounded-lg font-semibold hover:bg-neon-green/90 transition-all transform hover:scale-105"
-                  >
-                    Get Kit →
-                  </a>
-                </div>
-              </div>
-            </div>
+            <EnhancedKitCard
+              title="Park Day Kit"
+              description="Everything you need for a day outside that won't break, leak, or make you look like a tourist. I've tested this stuff through rain, shine, and questionable picnic choices."
+              imageUrl="https://images.unsplash.com/photo-1661788902947-19ff0d8f50ea"
+              affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/park-day-kit"
+              searchKeywords="outdoor picnic gear"
+            />
 
             {/* Desk Setup Kit */}
-            <div className="bg-gray-800 rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 group border border-gray-700 hover:border-neon-green">
-              <div className="relative h-64 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1586202690666-e1f32e218afe" 
-                  alt="Desk Setup Kit"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute top-4 right-4 bg-neon-green text-black px-3 py-1 rounded-full text-sm font-semibold">
-                  TESTED
-                </div>
-              </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-white mb-3">Desk Setup Kit</h3>
-                <p className="text-gray-400 mb-6">
-                  Productivity gear that actually makes you productive. No RGB nonsense, 
-                  no "aesthetic" crap that breaks in a week. Trust me, I've broken plenty.
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="text-neon-green font-semibold">
-                    <span className="text-2xl">★★★★★</span>
-                    <span className="ml-2 text-sm">Real reviews</span>
-                  </div>
-                  <a 
-                    href="https://www.amazon.com/shop/haarisshariff-20/list/desk-setup-kit" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-neon-green text-black px-6 py-3 rounded-lg font-semibold hover:bg-neon-green/90 transition-all transform hover:scale-105"
-                  >
-                    Get Kit →
-                  </a>
-                </div>
-              </div>
-            </div>
+            <EnhancedKitCard
+              title="Desk Setup Kit"
+              description="Productivity gear that actually makes you productive. No RGB nonsense, no 'aesthetic' crap that breaks in a week. Trust me, I've broken plenty."
+              imageUrl="https://images.unsplash.com/photo-1586202690666-e1f32e218afe"
+              affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/desk-setup-kit"
+              searchKeywords="desk setup accessories"
+            />
 
             {/* Smart Home Setup Kit */}
-            <div className="bg-gray-800 rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 group border border-gray-700 hover:border-neon-green">
-              <div className="relative h-64 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1525004351186-bdc426f3efaa" 
-                  alt="Smart Home Setup Kit"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute top-4 right-4 bg-neon-green text-black px-3 py-1 rounded-full text-sm font-semibold">
-                  TESTED
-                </div>
-              </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-white mb-3">Smart Home Setup</h3>
-                <p className="text-gray-400 mb-6">
-                  Home automation that doesn't require a computer science degree. 
-                  I've survived the setup hell so you don't have to. You're welcome.
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="text-neon-green font-semibold">
-                    <span className="text-2xl">★★★★★</span>
-                    <span className="ml-2 text-sm">Real reviews</span>
-                  </div>
-                  <a 
-                    href="https://www.amazon.com/shop/haarisshariff-20/list/smart-home-setup" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-neon-green text-black px-6 py-3 rounded-lg font-semibold hover:bg-neon-green/90 transition-all transform hover:scale-105"
-                  >
-                    Get Kit →
-                  </a>
-                </div>
-              </div>
-            </div>
+            <EnhancedKitCard
+              title="Smart Home Setup"
+              description="Home automation that doesn't require a computer science degree. I've survived the setup hell so you don't have to. You're welcome."
+              imageUrl="https://images.unsplash.com/photo-1525004351186-bdc426f3efaa"
+              affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/smart-home-setup"
+              searchKeywords="smart home devices"
+            />
 
             {/* Skin Care Essentials Kit */}
-            <div className="bg-gray-800 rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 group border border-gray-700 hover:border-neon-green">
-              <div className="relative h-64 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1633793566189-8e9fe6f817fc" 
-                  alt="Skin Care Essentials Kit"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute top-4 right-4 bg-neon-green text-black px-3 py-1 rounded-full text-sm font-semibold">
-                  TESTED
-                </div>
-              </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-white mb-3">Skin Care Essentials</h3>
-                <p className="text-gray-400 mb-6">
-                  The skincare routine that actually works without breaking the bank or your bathroom counter. 
-                  No 47-step routines, just results.
-                </p>
-                <div className="flex items-center justify-between">
-                  <div className="text-neon-green font-semibold">
-                    <span className="text-2xl">★★★★★</span>
-                    <span className="ml-2 text-sm">Real reviews</span>
-                  </div>
-                  <a 
-                    href="https://www.amazon.com/shop/haarisshariff-20/list/skincare-essentials" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-neon-green text-black px-6 py-3 rounded-lg font-semibold hover:bg-neon-green/90 transition-all transform hover:scale-105"
-                  >
-                    Get Kit →
-                  </a>
-                </div>
-              </div>
-            </div>
+            <EnhancedKitCard
+              title="Skin Care Essentials"
+              description="The skincare routine that actually works without breaking the bank or your bathroom counter. No 47-step routines, just results."
+              imageUrl="https://images.unsplash.com/photo-1633793566189-8e9fe6f817fc"
+              affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/skincare-essentials"
+              searchKeywords="skincare essentials"
+            />
           </div>
         </div>
       </section>
