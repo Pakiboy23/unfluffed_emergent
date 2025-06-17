@@ -141,35 +141,35 @@ const App = () => {
       {/* Kits */}
       <section id="kits" className="section bg-secondary">
         <div className="container">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-semibold text-primary mb-4">Tested Kits</h2>
-            <p className="text-secondary">Four carefully curated collections that actually work.</p>
+          <div className="section-header">
+            <h2 className="section-title">Tested Kits</h2>
+            <p className="section-subtitle">Four carefully curated collections that actually work.</p>
           </div>
           <div className="grid grid-cols-2">
             <KitCard
               title="Park Day Kit"
-              description="Everything for outdoor adventures that won't break, leak, or disappoint."
+              description="Everything for outdoor adventures that won't break, leak, or disappoint you when it matters most."
               imageUrl="https://images.unsplash.com/photo-1661788902947-19ff0d8f50ea"
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/park-day-kit"
               scruffImage={SCRUFF_IMAGES.parkDay}
             />
             <KitCard
               title="Desk Setup Kit"
-              description="Productivity gear that actually makes you productive. No RGB nonsense."
+              description="Productivity gear that actually makes you productive. No RGB nonsense, no aesthetic fluff."
               imageUrl="https://images.unsplash.com/photo-1586202690666-e1f32e218afe"
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/desk-setup-kit"
               scruffImage={SCRUFF_IMAGES.deskSetup}
             />
             <KitCard
               title="Smart Home Setup"
-              description="Home automation without the computer science degree requirement."
+              description="Home automation without the computer science degree requirement or endless troubleshooting."
               imageUrl="https://images.unsplash.com/photo-1525004351186-bdc426f3efaa"
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/smart-home-setup"
               scruffImage={SCRUFF_IMAGES.smartHome}
             />
             <KitCard
               title="Skin Care Essentials"
-              description="The routine that works without 47 steps or breaking the bank."
+              description="The routine that works without 47 steps, expensive serums, or breaking the bank."
               imageUrl="https://images.unsplash.com/photo-1633793566189-8e9fe6f817fc"
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/skincare-essentials"
               scruffImage={SCRUFF_IMAGES.skincare}
@@ -181,9 +181,9 @@ const App = () => {
       {/* Search */}
       <section id="search" className="section">
         <div className="container">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-semibold text-primary mb-4">Find Products</h2>
-            <p className="text-secondary">Search Amazon for products I've actually tested.</p>
+          <div className="section-header">
+            <h2 className="section-title">Find Products</h2>
+            <p className="section-subtitle">Search Amazon for products I've actually tested and recommend.</p>
           </div>
           <div className="search-form" style={{ maxWidth: '600px', margin: '0 auto' }}>
             <select 
@@ -213,15 +213,15 @@ const App = () => {
           </div>
 
           {searchResults.length > 0 && (
-            <div className="grid grid-cols-3" style={{ marginTop: '2rem' }}>
+            <div className="grid grid-cols-3" style={{ marginTop: '3rem' }}>
               {searchResults.map(product => (
                 <div key={product.asin} className="card">
                   <img 
                     src={product.image_url} 
                     alt={product.title}
-                    style={{ width: '100%', height: '120px', objectFit: 'cover', borderRadius: '4px', marginBottom: '1rem' }}
+                    style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '1.5rem' }}
                   />
-                  <h4 className="text-sm font-medium text-primary mb-2" style={{ 
+                  <h4 className="text-base font-medium text-primary mb-3" style={{ 
                     display: '-webkit-box',
                     WebkitLineClamp: 2,
                     WebkitBoxOrient: 'vertical',
@@ -230,12 +230,12 @@ const App = () => {
                   
                   <div className="flex items-center justify-between mb-4">
                     {product.price && (
-                      <span className="text-accent font-medium text-sm">
+                      <span className="text-accent font-semibold">
                         {product.price.currency} ${product.price.amount}
                       </span>
                     )}
                     {product.rating && (
-                      <div className="text-xs text-secondary">
+                      <div className="text-sm text-secondary">
                         ★ {product.rating} ({product.review_count})
                       </div>
                     )}
@@ -259,24 +259,24 @@ const App = () => {
       {/* About */}
       <section id="about" className="section bg-secondary">
         <div className="container">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-semibold text-primary mb-4">Why Trust Me?</h2>
-            <p className="text-secondary">Because I'm not trying to sell you a lifestyle.</p>
+          <div className="section-header">
+            <h2 className="section-title">Why Trust Me?</h2>
+            <p className="section-subtitle">Because I'm not trying to sell you a lifestyle or build a personal brand.</p>
           </div>
           <div className="grid grid-cols-3">
             <FeatureCard
               title="Actually Tested"
-              description="I buy it, use it, break it, then recommend it. Revolutionary concept."
+              description="I buy it, use it, break it, then recommend it. Revolutionary concept in today's world."
               scruffImage={SCRUFF_IMAGES.tested}
             />
             <FeatureCard
               title="No Sponsored BS"
-              description="Not getting paid to say nice things. If it sucks, I'll tell you."
+              description="Not getting paid to say nice things. If something sucks, I'll tell you exactly why."
               scruffImage={SCRUFF_IMAGES.noSponsored}
             />
             <FeatureCard
               title="Your True Bestie"
-              description="Giving you honest opinions without the sugar-coating."
+              description="Giving you honest opinions without the sugar-coating or ulterior motives."
               scruffImage={SCRUFF_IMAGES.trust}
             />
           </div>
@@ -286,31 +286,31 @@ const App = () => {
       {/* Newsletter */}
       <section className="section">
         <div className="container">
-          <div className="text-center">
-            <h2 className="text-3xl font-semibold text-primary mb-4">Stay Updated</h2>
-            <p className="text-secondary mb-8">New kits, honest reviews, zero spam.</p>
-            
-            <form onSubmit={handleEmailSubmit} className="flex gap-4 justify-center items-center" style={{ maxWidth: '400px', margin: '0 auto' }}>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                required
-                className="form-input"
-                style={{ flex: 1 }}
-              />
-              <button type="submit" className="btn btn-primary">
-                Subscribe
-              </button>
-            </form>
-            
-            {isSubscribed && (
-              <div className="text-accent text-sm" style={{ marginTop: '1rem' }}>
-                ✓ Subscribed! Check your email.
-              </div>
-            )}
+          <div className="section-header">
+            <h2 className="section-title">Stay Updated</h2>
+            <p className="section-subtitle">New kits, honest reviews, zero spam. I hate inbox clutter as much as you do.</p>
           </div>
+          
+          <form onSubmit={handleEmailSubmit} className="flex gap-4 justify-center items-center" style={{ maxWidth: '500px', margin: '0 auto' }}>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              required
+              className="form-input"
+              style={{ flex: 1 }}
+            />
+            <button type="submit" className="btn btn-primary">
+              Subscribe
+            </button>
+          </form>
+          
+          {isSubscribed && (
+            <div className="text-accent text-center" style={{ marginTop: '1.5rem', fontSize: '0.875rem' }}>
+              ✓ Subscribed! Check your email.
+            </div>
+          )}
         </div>
       </section>
 
