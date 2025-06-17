@@ -238,10 +238,10 @@ const App = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Why <span className="text-neon-green">Trust</span> Us?
+              Why <span className="text-neon-green">Trust</span> Me?
             </h2>
             <p className="text-xl text-gray-400">
-              Because we're not trying to sell you a lifestyle. Just good stuff.
+              Because I'm not trying to sell you a lifestyle. Just good stuff that works.
             </p>
           </div>
 
@@ -252,8 +252,8 @@ const App = () => {
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Actually Tested</h3>
               <p className="text-gray-400">
-                We buy it, use it, break it, then recommend it. Or don't. 
-                Revolutionary concept, we know.
+                I buy it, use it, break it, then recommend it. Or don't. 
+                Revolutionary concept, I know.
               </p>
             </div>
 
@@ -263,19 +263,19 @@ const App = () => {
               </div>
               <h3 className="text-xl font-bold text-white mb-4">No Sponsored BS</h3>
               <p className="text-gray-400">
-                We're not getting paid to say nice things. If it sucks, we'll tell you. 
-                If it's great, we'll tell you that too.
+                I'm not getting paid to say nice things. If it sucks, I'll tell you. 
+                If it's great, I'll tell you that too.
               </p>
             </div>
 
             <div className="text-center group">
               <div className="w-16 h-16 bg-neon-green/20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-neon-green/30 transition-colors">
-                <span className="text-neon-green text-2xl">⚡</span>
+                <span className="text-neon-green text-2xl">💯</span>
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Real People</h3>
+              <h3 className="text-xl font-bold text-white mb-4">Your Gay Bestie</h3>
               <p className="text-gray-400">
-                Made by people who actually use this stuff. Not influencers who get 
-                everything for free and lie about it.
+                I'm giving you the real truth you've grown to love, hate, and desperately need. 
+                No sugar-coating, just honest opinions.
               </p>
             </div>
           </div>
