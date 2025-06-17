@@ -389,12 +389,8 @@ const App = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center group">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full overflow-hidden border-3 border-neon-green/30 group-hover:border-neon-green transition-colors">
-                <img 
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
-                  alt="Scruff with VR headset"
-                  className="w-full h-full object-cover"
-                />
+              <div className="scruff-section mx-auto mb-6 group-hover:scale-110 transition-transform">
+                🔬
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Actually Tested</h3>
               <p className="text-gray-400">
@@ -404,12 +400,8 @@ const App = () => {
             </div>
 
             <div className="text-center group">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full overflow-hidden border-3 border-neon-green/30 group-hover:border-neon-green transition-colors">
-                <img 
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
-                  alt="Scruff with phone checkmark"
-                  className="w-full h-full object-cover"
-                />
+              <div className="scruff-section mx-auto mb-6 group-hover:scale-110 transition-transform">
+                📱
               </div>
               <h3 className="text-xl font-bold text-white mb-4">No Sponsored BS</h3>
               <p className="text-gray-400">
@@ -419,12 +411,8 @@ const App = () => {
             </div>
 
             <div className="text-center group">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full overflow-hidden border-3 border-neon-green/30 group-hover:border-neon-green transition-colors">
-                <img 
-                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
-                  alt="Scruff coffee shop thumbs up"
-                  className="w-full h-full object-cover"
-                />
+              <div className="scruff-section mx-auto mb-6 group-hover:scale-110 transition-transform">
+                🦝
               </div>
               <h3 className="text-xl font-bold text-white mb-4">Your Gay Bestie</h3>
               <p className="text-gray-400">
