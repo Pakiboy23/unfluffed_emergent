@@ -174,7 +174,7 @@ const App = () => {
             <h2 className="section-title">Tested Kits</h2>
             <p className="section-subtitle">Four carefully curated collections that actually work.</p>
           </div>
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
             <KitCard
               title="Park Day Kit"
               description="Everything for outdoor adventures that won't break, leak, or disappoint you when it matters most."
