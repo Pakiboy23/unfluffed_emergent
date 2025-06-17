@@ -268,7 +268,11 @@ test_plan:
     - "Featured Kits Section"
     - "Email Signup Section"
     - "Interactive Elements"
-  stuck_tasks: []
+    - "Enhanced Kit Cards with Live Data"
+    - "Product Search Section"
+  stuck_tasks:
+    - "Enhanced Kit Cards with Live Data"
+    - "Product Search Section"
   test_all: true
   test_priority: "high_first"
 
