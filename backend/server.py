@@ -50,14 +50,7 @@ class PAAPIClient:
             return self.client.search_items(
                 keywords=keywords,
                 search_index="All",
-                item_count=min(10, 10),  # Max 10 items per request
-                resources=[
-                    "Images.Primary.Large",
-                    "ItemInfo.Title",
-                    "Offers.Listings.Price", 
-                    "CustomerReviews.StarRating",
-                    "CustomerReviews.Count"
-                ]
+                item_count=min(10, 10)
             )
         except Exception as e:
             logging.error(f"PAAPI search error: {str(e)}")
@@ -65,17 +58,7 @@ class PAAPIClient:
     
     def get_product_details(self, asin: str):
         try:
-            return self.client.get_items(
-                item_ids=[asin],
-                resources=[
-                    "Images.Primary.Large",
-                    "ItemInfo.Title",
-                    "Offers.Listings.Price",
-                    "Offers.Listings.Availability.Message",
-                    "CustomerReviews.StarRating",
-                    "CustomerReviews.Count"
-                ]
-            )
+            return self.client.get_items(item_ids=[asin])
         except Exception as e:
             logging.error(f"PAAPI get item error: {str(e)}")
             return None
