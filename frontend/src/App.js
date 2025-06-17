@@ -381,7 +381,7 @@ const App = () => {
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/park-day-kit"
               searchKeywords="outdoor picnic gear"
               scruffImage={SCRUFF_IMAGES.parkDay}
-              scruffAlt="Scruff hiking outdoors"
+              scruffAlt="Active Scruff for outdoor adventures"
             />
 
             {/* Desk Setup Kit */}
@@ -392,7 +392,7 @@ const App = () => {
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/desk-setup-kit"
               searchKeywords="desk setup accessories"
               scruffImage={SCRUFF_IMAGES.deskSetup}
-              scruffAlt="Scruff digital drawing"
+              scruffAlt="Scruff working on laptop"
             />
 
             {/* Smart Home Setup Kit */}
@@ -403,7 +403,7 @@ const App = () => {
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/smart-home-setup"
               searchKeywords="smart home devices"
               scruffImage={SCRUFF_IMAGES.smartHome}
-              scruffAlt="Scruff with developer kit"
+              scruffAlt="Tech-savvy Scruff with gadgets"
             />
 
             {/* Skin Care Essentials Kit */}
@@ -414,7 +414,7 @@ const App = () => {
               affiliateUrl="https://www.amazon.com/shop/haarisshariff-20/list/skincare-essentials"
               searchKeywords="skincare essentials"
               scruffImage={SCRUFF_IMAGES.skincare}
-              scruffAlt="Scruff winking with thumbs up"
+              scruffAlt="Relaxed lifestyle Scruff"
             />
           </div>
         </div>
