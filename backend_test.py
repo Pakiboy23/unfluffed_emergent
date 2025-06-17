@@ -4,9 +4,23 @@ import json
 import sys
 import time
 import os
+from typing import Dict, List, Any, Tuple, Optional
 
 # Configuration
-BASE_URL = "http://localhost:8001"
+# Get the backend URL from the frontend .env file
+try:
+    with open('/app/frontend/.env', 'r') as f:
+        for line in f:
+            if line.startswith('REACT_APP_BACKEND_URL='):
+                BASE_URL = line.strip().split('=')[1]
+                break
+        else:
+            # Fallback to localhost if not found
+            BASE_URL = "http://localhost:8001"
+except Exception:
+    # Fallback to localhost if there's an error
+    BASE_URL = "http://localhost:8001"
+
 API_BASE_URL = f"{BASE_URL}/api"
 
 def test_api_health():
