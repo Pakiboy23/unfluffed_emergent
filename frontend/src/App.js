@@ -325,6 +325,9 @@ const App = () => {
         </div>
       </section>
 
+      {/* Product Search Section */}
+      <ProductSearchSection />
+
       {/* Why Section */}
       <section id="about" className="py-20 bg-black">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
