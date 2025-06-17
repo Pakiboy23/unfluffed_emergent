@@ -190,11 +190,8 @@ def run_all_tests():
     product_search_success, asin = test_amazon_product_search()
     
     # Test 3: Product Details (if we have an ASIN)
-    if asin:
-        product_details_success = test_product_details(asin)
-    else:
-        print("\n⚠️ Skipping Product Details Test: No ASIN available from search")
-        product_details_success = False
+    # Always run product details test with a hardcoded ASIN if search doesn't return one
+    product_details_success = test_product_details(asin)
     
     # Test 4: Database Connection
     db_connection_success = test_database_connection()
@@ -205,10 +202,10 @@ def run_all_tests():
     print("=====================================================")
     print(f"API Health Check:       {'✅ PASSED' if api_health_success else '❌ FAILED'}")
     print(f"Amazon Product Search:  {'✅ PASSED' if product_search_success else '❌ FAILED'}")
-    print(f"Product Details:        {'✅ PASSED' if product_details_success else '❌ FAILED' if asin else '⚠️ SKIPPED'}")
+    print(f"Product Details:        {'✅ PASSED' if product_details_success else '❌ FAILED'}")
     print(f"Database Connection:    {'✅ PASSED' if db_connection_success else '❌ FAILED'}")
     
-    overall_success = api_health_success and product_search_success and (product_details_success if asin else True) and db_connection_success
+    overall_success = api_health_success and product_search_success and product_details_success and db_connection_success
     print("\n=====================================================")
     print(f"🏁 OVERALL TEST RESULT: {'✅ PASSED' if overall_success else '❌ FAILED'}")
     print("=====================================================")
