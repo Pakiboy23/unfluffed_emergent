@@ -91,6 +91,22 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
+class ProductSearchRequest(BaseModel):
+    query: str
+    country: str = "US"
+    page: int = 1
+
+class ProductData(BaseModel):
+    asin: str
+    title: str
+    image_url: Optional[str] = None
+    price: Optional[dict] = None
+    rating: Optional[float] = None
+    review_count: Optional[int] = None
+    affiliate_url: str
+    country: str
+    last_updated: str
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
