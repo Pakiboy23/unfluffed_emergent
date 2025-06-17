@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
-// Scruff image paths - unique individual images
+// Scruff image paths - updated for kit cards
 const SCRUFF_IMAGES = {
-  logo: '/images/scruff/logo.png',                         // Asset 1
-  hero: '/images/scruff/hero-branded.png',                 // New branded UNFLUFFED image
-  parkDay: '/images/scruff/park-day.png',                  // Asset 3 
-  deskSetup: '/images/scruff/desk-setup-new.png',          // Asset 12 (unique)
-  smartHome: '/images/scruff/smart-home-new.png',          // Asset 13 (unique)
-  skincare: '/images/scruff/skincare-new.png',             // Asset 14 (unique)
-  trust: '/images/scruff/trust.png',                       // Asset 7
-  tested: '/images/scruff/tested.png',                     // Asset 10
-  noSponsored: '/images/scruff/no-sponsored.png',          // Asset 11
-  search: '/images/scruff/search-individual.png',          // Asset 15 (individual)
-  email: '/images/scruff/email.png'                        // Asset 9
+  logo: '/images/scruff/logo.png',
+  hero: '/images/scruff/logo.png',                        // Use working logo for hero
+  parkDay: '/images/scruff/kit-active.png',               // Walking/active Scruff
+  deskSetup: '/images/scruff/kit-desk.png',               // Laptop Scruff
+  smartHome: '/images/scruff/kit-tech.png',               // Tech gadget Scruff
+  skincare: '/images/scruff/kit-lifestyle.png',           // Relaxed lifestyle Scruff
+  trust: '/images/scruff/trust.png',
+  tested: '/images/scruff/tested.png',
+  noSponsored: '/images/scruff/no-sponsored.png',
+  search: '/images/scruff/search-individual.png',
+  email: '/images/scruff/email.png'
 };
 
 // Scruff Image Component with fallback
