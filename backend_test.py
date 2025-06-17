@@ -3,6 +3,7 @@ import requests
 import json
 import sys
 import time
+import os
 
 # Configuration
 BASE_URL = "http://localhost:8001"
@@ -72,6 +73,19 @@ def test_amazon_product_search():
                     print(f"   Recent logs:\n{logs}")
                 except Exception as log_e:
                     print(f"   Could not retrieve logs: {str(log_e)}")
+                
+                # Check Amazon API credentials
+                print("\n   Checking Amazon API credentials...")
+                try:
+                    with open('/app/backend/.env', 'r') as f:
+                        env_content = f.read()
+                        print(f"   Environment variables in backend/.env:")
+                        for line in env_content.splitlines():
+                            if line.startswith(('PAAPI_', 'PARTNER_')):
+                                print(f"   - {line}")
+                except Exception as env_e:
+                    print(f"   Could not read environment variables: {str(env_e)}")
+                
                 return True, None
         else:
             print(f"❌ Amazon Product Search: FAILED with status code {response.status_code}")
