@@ -304,7 +304,7 @@ const App = () => {
             <h2 className="section-title">Why Trust Me?</h2>
             <p className="section-subtitle">Because I'm not trying to sell you a lifestyle or build a personal brand.</p>
           </div>
-          <div className="grid grid-cols-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <FeatureCard
               title="Actually Tested"
               description="I buy it, use it, break it, then recommend it. Revolutionary concept in today's world."
