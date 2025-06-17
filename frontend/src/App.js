@@ -286,12 +286,8 @@ const App = () => {
         
         <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
           <div className="flex items-center justify-center mb-8">
-            <div className="w-32 h-32 mr-6">
-              <img 
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" 
-                alt="Scruff with tech background"
-                className="w-full h-full object-cover rounded-full border-4 border-neon-green shadow-neon"
-              />
+            <div className="scruff-hero mr-6">
+              🦝
             </div>
             <div className="text-left">
               <h1 className="text-5xl md:text-7xl font-bold text-white mb-2 leading-tight">
