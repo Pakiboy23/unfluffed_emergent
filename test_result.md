@@ -336,10 +336,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "API Health Check"
-    - "Amazon Product Search"
-    - "Product Details"
-    - "Database Connection"
+    - "Mobile Optimization"
   stuck_tasks: []
   test_all: true
   test_priority: "high_first"
