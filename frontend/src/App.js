@@ -53,8 +53,8 @@ const App = () => {
             <span className="text-neon-green">Just stuff that works.</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Curated gear for real people who actually use the things they buy. 
-            No sponsored BS, no fake reviews, no "omg bestie" nonsense.
+            I'm your gay bestie giving you the real no-BS truth you've grown to love, hate, and desperately need. 
+            Curated gear that actually works - no sponsored nonsense.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
