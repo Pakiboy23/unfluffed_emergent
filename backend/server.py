@@ -134,43 +134,39 @@ async def search_products(request: ProductSearchRequest):
         
         # Process results
         processed_products = []
-        if response and hasattr(response, 'data') and response.data:
-            items = response.data.get('SearchResult', {}).get('Items', [])
-            for item in items:
+        if response and hasattr(response, 'items') and response.items:
+            for item in response.items:
                 try:
-                    asin = item.get('ASIN', '')
+                    asin = item.asin if hasattr(item, 'asin') else ''
                     
                     # Get title
                     title = "Unknown"
-                    item_info = item.get('ItemInfo', {})
-                    if 'Title' in item_info and 'DisplayValue' in item_info['Title']:
-                        title = item_info['Title']['DisplayValue']
+                    if hasattr(item, 'item_info') and item.item_info and hasattr(item.item_info, 'title') and item.item_info.title:
+                        title = item.item_info.title.display_value
                     
                     # Get image
                     image_url = None
-                    images = item.get('Images', {})
-                    if 'Primary' in images and 'Large' in images['Primary']:
-                        image_url = images['Primary']['Large']['URL']
+                    if hasattr(item, 'images') and item.images and hasattr(item.images, 'primary') and item.images.primary and hasattr(item.images.primary, 'large'):
+                        image_url = item.images.primary.large.url
                     
                     # Get price
                     price_data = None
-                    offers = item.get('Offers', {})
-                    if 'Listings' in offers and offers['Listings']:
-                        price_info = offers['Listings'][0].get('Price', {})
-                        if 'Amount' in price_info:
+                    if hasattr(item, 'offers') and item.offers and hasattr(item.offers, 'listings') and item.offers.listings:
+                        price_info = item.offers.listings[0].price
+                        if price_info and hasattr(price_info, 'amount'):
                             price_data = {
-                                "amount": float(price_info['Amount']),
-                                "currency": price_info.get('Currency', 'USD')
+                                "amount": float(price_info.amount),
+                                "currency": price_info.currency if hasattr(price_info, 'currency') else 'USD'
                             }
                     
                     # Get reviews
                     rating = None
                     review_count = None
-                    reviews = item.get('CustomerReviews', {})
-                    if 'StarRating' in reviews:
-                        rating = float(reviews['StarRating']['Value'])
-                    if 'Count' in reviews:
-                        review_count = int(reviews['Count'])
+                    if hasattr(item, 'customer_reviews') and item.customer_reviews:
+                        if hasattr(item.customer_reviews, 'star_rating') and item.customer_reviews.star_rating:
+                            rating = float(item.customer_reviews.star_rating.value)
+                        if hasattr(item.customer_reviews, 'count'):
+                            review_count = int(item.customer_reviews.count)
                     
                     product_data = {
                         "asin": asin,
