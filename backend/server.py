@@ -316,6 +316,20 @@ async def search_products(request: ProductSearchRequest):
                         if hasattr(item.customer_reviews, 'count'):
                             review_count = int(item.customer_reviews.count)
                     
+                    # Auto-detect category from title
+                    category = "General"
+                    title_lower = title.lower()
+                    if any(word in title_lower for word in ["headphone", "earbuds", "mouse", "cable", "phone"]):
+                        category = "Electronics"
+                    elif any(word in title_lower for word in ["mug", "pillow", "light", "pot", "storage"]):
+                        category = "Home"
+                    elif any(word in title_lower for word in ["moisturizer", "mask", "balm", "polish"]):
+                        category = "Beauty"
+                    elif any(word in title_lower for word in ["yoga", "bottle", "bands", "shoes"]):
+                        category = "Sports"
+                    elif any(word in title_lower for word in ["book", "guide", "novel"]):
+                        category = "Books"
+                    
                     product_data = {
                         "asin": asin,
                         "title": title,
@@ -323,6 +337,7 @@ async def search_products(request: ProductSearchRequest):
                         "price": price_data,
                         "rating": rating,
                         "review_count": review_count,
+                        "category": category,
                         "affiliate_url": f"https://www.amazon.com/dp/{asin}?tag={paapi_client.partner_tag}" if request.country == "US" else f"https://www.amazon.{request.country.lower()}/dp/{asin}?tag={paapi_client.partner_tag}",
                         "country": request.country,
                         "last_updated": datetime.utcnow().isoformat()
@@ -345,6 +360,215 @@ async def search_products(request: ProductSearchRequest):
     except Exception as e:
         logging.error(f"Search failed: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Search failed: {str(e)}")
+
+@api_router.post("/products/advanced-search")
+async def advanced_search(request: AdvancedSearchRequest):
+    try:
+        # Generate cache key including filters
+        cache_key = f"advanced_{request.query}_{request.country}_{request.page}_{request.min_price}_{request.max_price}_{request.min_rating}_{request.category}_{request.sort_by}"
+        
+        # Check cache first
+        cached = await db.advanced_searches.find_one({
+            "cache_key": cache_key,
+            "expires_at": {"$gt": datetime.utcnow()}
+        })
+        
+        if cached:
+            return {
+                "products": cached["results"], 
+                "cached": True,
+                "total_count": cached.get("total_count", 0),
+                "filters_applied": cached.get("filters_applied", {}),
+                "suggestions": cached.get("suggestions", [])
+            }
+        
+        # Get base search results
+        paapi_client = PAAPIClient(request.country)
+        response = paapi_client.search_products(request.query, request.page, {
+            "min_price": request.min_price,
+            "max_price": request.max_price,
+            "min_rating": request.min_rating,
+            "category": request.category
+        })
+        
+        if not response or not hasattr(response, 'items') or not response.items:
+            return {"products": [], "cached": False, "total_count": 0}
+        
+        # Process and filter results
+        processed_products = []
+        for item in response.items:
+            try:
+                asin = item.asin if hasattr(item, 'asin') else ''
+                
+                # Get title
+                title = "Unknown"
+                if hasattr(item, 'item_info') and item.item_info and hasattr(item.item_info, 'title') and item.item_info.title:
+                    title = item.item_info.title.display_value
+                
+                # Get image
+                image_url = None
+                if hasattr(item, 'images') and item.images and hasattr(item.images, 'primary') and item.images.primary and hasattr(item.images.primary, 'large'):
+                    image_url = item.images.primary.large.url
+                
+                # Get price
+                price_data = None
+                price_amount = 0
+                if hasattr(item, 'offers') and item.offers and hasattr(item.offers, 'listings') and item.offers.listings:
+                    price_info = item.offers.listings[0].price
+                    if price_info and hasattr(price_info, 'amount'):
+                        price_amount = float(price_info.amount)
+                        price_data = {
+                            "amount": price_amount,
+                            "currency": price_info.currency if hasattr(price_info, 'currency') else 'USD'
+                        }
+                
+                # Get reviews
+                rating = 0
+                review_count = 0
+                if hasattr(item, 'customer_reviews') and item.customer_reviews:
+                    if hasattr(item.customer_reviews, 'star_rating') and item.customer_reviews.star_rating:
+                        rating = float(item.customer_reviews.star_rating.value)
+                    if hasattr(item.customer_reviews, 'count'):
+                        review_count = int(item.customer_reviews.count)
+                
+                # Auto-detect category
+                category = "General"
+                title_lower = title.lower()
+                if any(word in title_lower for word in ["headphone", "earbuds", "mouse", "cable", "phone"]):
+                    category = "Electronics"
+                elif any(word in title_lower for word in ["mug", "pillow", "light", "pot", "storage"]):
+                    category = "Home"
+                elif any(word in title_lower for word in ["moisturizer", "mask", "balm", "polish"]):
+                    category = "Beauty"
+                elif any(word in title_lower for word in ["yoga", "bottle", "bands", "shoes"]):
+                    category = "Sports"
+                elif any(word in title_lower for word in ["book", "guide", "novel"]):
+                    category = "Books"
+                
+                # Apply filters
+                if request.min_price and price_amount < request.min_price:
+                    continue
+                if request.max_price and price_amount > request.max_price:
+                    continue
+                if request.min_rating and rating < request.min_rating:
+                    continue
+                if request.category and category != request.category:
+                    continue
+                
+                product_data = {
+                    "asin": asin,
+                    "title": title,
+                    "image_url": image_url,
+                    "price": price_data,
+                    "rating": rating,
+                    "review_count": review_count,
+                    "category": category,
+                    "affiliate_url": f"https://www.amazon.com/dp/{asin}?tag={paapi_client.partner_tag}" if request.country == "US" else f"https://www.amazon.{request.country.lower()}/dp/{asin}?tag={paapi_client.partner_tag}",
+                    "country": request.country,
+                    "last_updated": datetime.utcnow().isoformat()
+                }
+                processed_products.append(product_data)
+            except Exception as item_error:
+                logging.error(f"Error processing item: {str(item_error)}")
+                continue
+        
+        # Apply sorting
+        if request.sort_by == "price_low":
+            processed_products.sort(key=lambda x: x["price"]["amount"] if x["price"] else 0)
+        elif request.sort_by == "price_high":
+            processed_products.sort(key=lambda x: x["price"]["amount"] if x["price"] else 0, reverse=True)
+        elif request.sort_by == "rating":
+            processed_products.sort(key=lambda x: x["rating"] or 0, reverse=True)
+        elif request.sort_by == "review_count":
+            processed_products.sort(key=lambda x: x["review_count"] or 0, reverse=True)
+        
+        # Generate suggestions if requested
+        suggestions = []
+        if request.include_suggestions:
+            # Store search query for future suggestions
+            await db.search_queries.update_one(
+                {"query": request.query.lower()},
+                {"$inc": {"count": 1}, "$set": {"last_used": datetime.utcnow()}},
+                upsert=True
+            )
+            
+            # Get popular related searches
+            similar_queries = await db.search_queries.find({
+                "query": {"$regex": f".*{request.query.lower()}.*"},
+                "query": {"$ne": request.query.lower()}
+            }).sort("count", -1).limit(5).to_list(5)
+            
+            suggestions = [{"query": q["query"], "count": q["count"]} for q in similar_queries]
+        
+        # Prepare response
+        filters_applied = {
+            "min_price": request.min_price,
+            "max_price": request.max_price, 
+            "min_rating": request.min_rating,
+            "category": request.category,
+            "sort_by": request.sort_by
+        }
+        
+        # Cache results
+        await db.advanced_searches.insert_one({
+            "cache_key": cache_key,
+            "results": processed_products,
+            "total_count": len(processed_products),
+            "filters_applied": filters_applied,
+            "suggestions": suggestions,
+            "expires_at": datetime.utcnow() + timedelta(hours=1),
+            "created_at": datetime.utcnow()
+        })
+        
+        return {
+            "products": processed_products,
+            "cached": False,
+            "total_count": len(processed_products),
+            "filters_applied": filters_applied,
+            "suggestions": suggestions
+        }
+        
+    except Exception as e:
+        logging.error(f"Advanced search failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Advanced search failed: {str(e)}")
+
+@api_router.get("/categories")
+async def get_categories():
+    """Get available product categories with counts"""
+    try:
+        # For demo purposes, return static categories
+        # In real implementation, this would query the database
+        categories = [
+            {"name": "Electronics", "value": "Electronics", "count": 150},
+            {"name": "Home & Kitchen", "value": "Home", "count": 120},
+            {"name": "Beauty & Personal Care", "value": "Beauty", "count": 95},
+            {"name": "Sports & Outdoors", "value": "Sports", "count": 80},
+            {"name": "Books", "value": "Books", "count": 65},
+            {"name": "All Categories", "value": "", "count": 510}
+        ]
+        return {"categories": categories}
+    except Exception as e:
+        logging.error(f"Failed to get categories: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to get categories: {str(e)}")
+
+@api_router.get("/search-suggestions")
+async def get_search_suggestions(q: str = ""):
+    """Get search suggestions based on popular queries"""
+    try:
+        if not q:
+            # Return popular searches
+            popular = await db.search_queries.find().sort("count", -1).limit(10).to_list(10)
+            return {"suggestions": [p["query"] for p in popular]}
+        
+        # Return queries that match the input
+        similar = await db.search_queries.find({
+            "query": {"$regex": f"^{q.lower()}.*"}
+        }).sort("count", -1).limit(8).to_list(8)
+        
+        return {"suggestions": [s["query"] for s in similar]}
+    except Exception as e:
+        logging.error(f"Failed to get suggestions: {str(e)}")
+        return {"suggestions": []}
 
 @api_router.get("/products/{asin}")
 async def get_product_details(asin: str, country: str = "US"):
