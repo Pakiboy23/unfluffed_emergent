@@ -134,48 +134,58 @@ async def search_products(request: ProductSearchRequest):
         
         # Process results
         processed_products = []
-        if response and hasattr(response, 'items') and response.items:
-            for item in response.items:
+        if response and hasattr(response, 'data') and response.data:
+            items = response.data.get('SearchResult', {}).get('Items', [])
+            for item in items:
                 try:
+                    asin = item.get('ASIN', '')
+                    
+                    # Get title
+                    title = "Unknown"
+                    item_info = item.get('ItemInfo', {})
+                    if 'Title' in item_info and 'DisplayValue' in item_info['Title']:
+                        title = item_info['Title']['DisplayValue']
+                    
+                    # Get image
+                    image_url = None
+                    images = item.get('Images', {})
+                    if 'Primary' in images and 'Large' in images['Primary']:
+                        image_url = images['Primary']['Large']['URL']
+                    
+                    # Get price
                     price_data = None
-                    if hasattr(item, 'offers') and item.offers and item.offers.listings:
-                        price_info = item.offers.listings[0].price
-                        if price_info:
+                    offers = item.get('Offers', {})
+                    if 'Listings' in offers and offers['Listings']:
+                        price_info = offers['Listings'][0].get('Price', {})
+                        if 'Amount' in price_info:
                             price_data = {
-                                "amount": float(price_info.amount) if hasattr(price_info, 'amount') and price_info.amount else None,
-                                "currency": price_info.currency if hasattr(price_info, 'currency') and price_info.currency else None
+                                "amount": float(price_info['Amount']),
+                                "currency": price_info.get('Currency', 'USD')
                             }
                     
+                    # Get reviews
                     rating = None
                     review_count = None
-                    if hasattr(item, 'customer_reviews') and item.customer_reviews:
-                        if hasattr(item.customer_reviews, 'star_rating') and item.customer_reviews.star_rating:
-                            rating = float(item.customer_reviews.star_rating.value)
-                        if hasattr(item.customer_reviews, 'count') and item.customer_reviews.count:
-                            review_count = int(item.customer_reviews.count)
-                    
-                    title = "Unknown"
-                    if hasattr(item, 'item_info') and item.item_info and hasattr(item.item_info, 'title') and item.item_info.title:
-                        title = item.item_info.title.display_value
-                    
-                    image_url = None
-                    if hasattr(item, 'images') and item.images and hasattr(item.images, 'primary') and item.images.primary and hasattr(item.images.primary, 'large'):
-                        image_url = item.images.primary.large.url
+                    reviews = item.get('CustomerReviews', {})
+                    if 'StarRating' in reviews:
+                        rating = float(reviews['StarRating']['Value'])
+                    if 'Count' in reviews:
+                        review_count = int(reviews['Count'])
                     
                     product_data = {
-                        "asin": item.asin,
+                        "asin": asin,
                         "title": title,
                         "image_url": image_url,
                         "price": price_data,
                         "rating": rating,
                         "review_count": review_count,
-                        "affiliate_url": f"https://amazon.{request.country.lower()}/dp/{item.asin}?tag={os.environ['PARTNER_TAG']}",
+                        "affiliate_url": f"https://amazon.{request.country.lower()}/dp/{asin}?tag={os.environ['PARTNER_TAG']}",
                         "country": request.country,
                         "last_updated": datetime.utcnow().isoformat()
                     }
                     processed_products.append(product_data)
                 except Exception as item_error:
-                    logging.error(f"Error processing item {item.asin if hasattr(item, 'asin') else 'unknown'}: {str(item_error)}")
+                    logging.error(f"Error processing item: {str(item_error)}")
                     continue
         
         # Cache results for 1 hour
