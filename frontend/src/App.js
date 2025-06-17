@@ -137,8 +137,12 @@ const App = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
           
           {/* Scruff Mascot in corner */}
-          <div className="absolute top-4 left-4 scruff-kit-badge">
-            🦝
+          <div className="absolute top-4 left-4">
+            <ScruffImage 
+              imagePath={scruffImage}
+              alt={scruffAlt}
+              className="scruff-kit-badge"
+            />
           </div>
           
           <div className="absolute top-4 right-4 bg-neon-green text-black px-3 py-1 rounded-full text-sm font-semibold">
