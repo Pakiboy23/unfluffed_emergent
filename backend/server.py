@@ -26,9 +26,9 @@ db = client[os.environ['DB_NAME']]
 
 # Amazon API Configuration
 REGIONAL_CONFIG = {
-    "US": {"host": "webservices.amazon.com", "region": "us-east-1"},
-    "UK": {"host": "webservices.amazon.co.uk", "region": "eu-west-1"},
-    "CA": {"host": "webservices.amazon.ca", "region": "us-east-1"}
+    "US": {"host": "webservices.amazon.com", "region": "us-east-1", "tag_suffix": "-20"},
+    "UK": {"host": "webservices.amazon.co.uk", "region": "eu-west-1", "tag_suffix": "-21"},
+    "CA": {"host": "webservices.amazon.ca", "region": "us-east-1", "tag_suffix": "-20"}
 }
 
 class PAAPIClient:
