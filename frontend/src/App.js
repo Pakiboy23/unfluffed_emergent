@@ -246,19 +246,26 @@ const App = () => {
               <p className="text-center text-sm text-secondary" style={{ marginTop: '1.5rem', marginBottom: '2rem' }}>
                 These are Amazon results with my affiliate links. The ones in my kits above are what I've actually tested.
               </p>
-              <div className="grid grid-cols-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {searchResults.map(product => (
                   <div key={product.asin} className="card">
                     <img 
                       src={product.image_url} 
                       alt={product.title}
-                      style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', marginBottom: '1.5rem' }}
+                      style={{ 
+                        width: '100%', 
+                        height: '160px', 
+                        objectFit: 'cover', 
+                        borderRadius: '8px', 
+                        marginBottom: '1.5rem'
+                      }}
                     />
                     <h4 className="text-base font-medium text-primary mb-3" style={{ 
                       display: '-webkit-box',
                       WebkitLineClamp: 2,
                       WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden'
+                      overflow: 'hidden',
+                      minHeight: '2.5rem'
                     }}>{product.title}</h4>
                     
                     <div className="flex items-center justify-between mb-4">
