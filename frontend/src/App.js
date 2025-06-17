@@ -5,15 +5,214 @@ import './App.css';
 const App = () => {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [showProductSearch, setShowProductSearch] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchCountry, setSearchCountry] = useState('US');
+  const [isSearching, setIsSearching] = useState(false);
+
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically send to your email service
     console.log('Email submitted:', email);
     setIsSubscribed(true);
     setEmail('');
     setTimeout(() => setIsSubscribed(false), 3000);
   };
+
+  const handleProductSearch = async () => {
+    if (!searchQuery.trim()) return;
+    
+    setIsSearching(true);
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/products/search`, {
+        query: searchQuery,
+        country: searchCountry
+      });
+      setSearchResults(response.data.products || []);
+    } catch (error) {
+      console.error('Search failed:', error);
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Enhanced Kit Card Component with API integration
+  const EnhancedKitCard = ({ title, description, imageUrl, affiliateUrl, searchKeywords }) => {
+    const [livePrice, setLivePrice] = useState(null);
+    const [availability, setAvailability] = useState('Check Amazon');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const fetchLiveData = async () => {
+      if (!searchKeywords) return;
+      
+      setIsLoading(true);
+      try {
+        const response = await axios.post(`${BACKEND_URL}/api/products/search`, {
+          query: searchKeywords,
+          country: 'US'
+        });
+        
+        if (response.data.products && response.data.products.length > 0) {
+          const product = response.data.products[0];
+          if (product.price) {
+            setLivePrice(product.price);
+          }
+          setAvailability('In Stock');
+        }
+      } catch (error) {
+        console.error('Failed to fetch live data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    useEffect(() => {
+      fetchLiveData();
+      // Refresh every 5 minutes
+      const interval = setInterval(fetchLiveData, 300000);
+      return () => clearInterval(interval);
+    }, [searchKeywords]);
+
+    return (
+      <div className="bg-gray-800 rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 group border border-gray-700 hover:border-neon-green">
+        <div className="relative h-64 overflow-hidden">
+          <img 
+            src={imageUrl} 
+            alt={title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          <div className="absolute top-4 right-4 bg-neon-green text-black px-3 py-1 rounded-full text-sm font-semibold">
+            TESTED
+          </div>
+          {livePrice && (
+            <div className="absolute top-4 left-4 bg-black/80 text-neon-green px-3 py-1 rounded-full text-sm font-semibold">
+              {livePrice.currency} ${livePrice.amount}
+            </div>
+          )}
+        </div>
+        <div className="p-8">
+          <h3 className="text-2xl font-bold text-white mb-3">{title}</h3>
+          <p className="text-gray-400 mb-6">{description}</p>
+          
+          <div className="flex items-center justify-between mb-4">
+            <div className="text-neon-green font-semibold">
+              <span className="text-2xl">★★★★★</span>
+              <span className="ml-2 text-sm">Real reviews</span>
+            </div>
+            {isLoading && (
+              <div className="text-neon-green text-sm">
+                <span className="loading-spinner inline-block mr-2"></span>
+                Loading...
+              </div>
+            )}
+          </div>
+          
+          <div className="space-y-2">
+            <div className="text-sm text-gray-400">
+              Availability: <span className="text-neon-green">{availability}</span>
+            </div>
+            
+            <a 
+              href={affiliateUrl} 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full bg-neon-green text-black px-6 py-3 rounded-lg font-semibold hover:bg-neon-green/90 transition-all transform hover:scale-105 text-center"
+            >
+              Get Kit →
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Product Search Component
+  const ProductSearchSection = () => (
+    <section className="py-20 bg-gray-800">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-white mb-4">
+            Find <span className="text-neon-green">Real</span> Products
+          </h2>
+          <p className="text-xl text-gray-400">
+            Search Amazon for products I've actually tested and recommend
+          </p>
+        </div>
+
+        <div className="bg-gray-900 p-6 rounded-2xl border border-gray-700">
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <select 
+              value={searchCountry} 
+              onChange={(e) => setSearchCountry(e.target.value)}
+              className="px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-neon-green"
+            >
+              <option value="US">United States</option>
+              <option value="UK">United Kingdom</option>
+              <option value="CA">Canada</option>
+            </select>
+            
+            <input 
+              type="text" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search Amazon products..."
+              className="flex-1 px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-neon-green"
+              onKeyPress={(e) => e.key === 'Enter' && handleProductSearch()}
+            />
+            
+            <button 
+              onClick={handleProductSearch} 
+              disabled={isSearching}
+              className="bg-neon-green text-black px-6 py-3 rounded-lg font-semibold hover:bg-neon-green/90 transition-all transform hover:scale-105 disabled:opacity-50"
+            >
+              {isSearching ? 'Searching...' : 'Search'}
+            </button>
+          </div>
+
+          {searchResults.length > 0 && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {searchResults.map(product => (
+                <div key={product.asin} className="bg-gray-800 p-4 rounded-xl border border-gray-700 hover:border-neon-green transition-colors">
+                  <img 
+                    src={product.image_url} 
+                    alt={product.title}
+                    className="w-full h-32 object-cover rounded-lg mb-3"
+                  />
+                  <h4 className="text-white font-semibold text-sm mb-2 line-clamp-2">{product.title}</h4>
+                  
+                  <div className="flex items-center justify-between mb-3">
+                    {product.price && (
+                      <span className="text-neon-green font-semibold">
+                        {product.price.currency} ${product.price.amount}
+                      </span>
+                    )}
+                    {product.rating && (
+                      <div className="text-yellow-400 text-sm">
+                        ★ {product.rating} ({product.review_count})
+                      </div>
+                    )}
+                  </div>
+                  
+                  <a 
+                    href={product.affiliate_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block w-full bg-neon-green text-black px-4 py-2 rounded-lg font-semibold text-center text-sm hover:bg-neon-green/90 transition-all"
+                  >
+                    View on Amazon
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
 
   return (
     <div className="App">
